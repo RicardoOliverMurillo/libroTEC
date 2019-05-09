@@ -4,7 +4,7 @@ mongoose.set('useCreateIndex', true);
 
 const userSchema = new Schema({
     idClient: {
-        type: String,
+        type: Number,
         required: true, 
         trim: true
     },
@@ -58,4 +58,4 @@ const userSchema = new Schema({
     timestamps: true
 });
 
-module.exports = userSchema;
+module.exports = mongoose.model("Users", userSchema);

@@ -6,7 +6,7 @@ const DB = require('./config/db');
 const bodyParser = require('body-parser');
 
 //Importing routes
-const authRoutes = require('./routes/authRoutes');
+const authRoutes = require('./routes/usersRoutes');
 
 //init DB
 DB();

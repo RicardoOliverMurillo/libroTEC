@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>LibroTEC</title>
+        <!--BOOTSTRAP-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">       
+    </head>
+    <body>
+        <div class="row">
+                <!--FORM-->
+            <div class="col-md-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <form action="/registerClient" method="POST">
+                                <div class="form-group">
+                                        <input type="text" name="idClient" placeholder="Inserte su cedula" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                        <input type="text" name="name" placeholder="Inserte su nombre" class="form-control">
+                                </div>    
+                                <div class="form-group">
+                                        <input type="text" name="last_name" placeholder="Inserte su apellido" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                        <input type="date" name="birth" placeholder="Inserte su fecha de nacimiento" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                        <input type="text" name="type" placeholder="Seleccione el tipo de cliente" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                        <input type="text" name="place" placeholder="Inserte su ubicación" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                        <input type="text" name="email" placeholder="Inserte su correo electrónico" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                        <input type="text" name="phone_number" placeholder="Inserte su número de teléfono" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                        <input type="text" name="password" placeholder="Inserte su contraseña" class="form-control">
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn btn-success btn-block">Registrarse</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

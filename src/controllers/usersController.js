@@ -1,4 +1,4 @@
-const Users = require('../dao/authDao');
+const Users = require('../models/users');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const SECRET_KEY = 'secretkey123456';
@@ -7,14 +7,24 @@ exports.loginPage = (req, res) =>{
     res.render('index')
 }
 
-exports.createUser = (req, res, next) => {
+exports.registerPage = (req, res) =>{
+    res.render('UserViews/registerView')
+}
+
+exports.createUser = async (req, res) => {
     const newUser = {
+        idClient : req.body.idClient,
         name : req.body.name,
+        last_name : req.body.last_name,
+        birth : req.body.birth,
+        type : req.body.type,
+        place : req.body.place,
         email : req.body.email,
-        password : bcrypt.hashSync(req.body.password),
-        role : req.body.role
+        phone_number : req.body.phone_number,
+        password : bcrypt.hashSync(req.body.password)
     }
-    Users.create(newUser, (err, user) => {
+    const user = new Users(newUser);
+    await user.save((err, user) =>{  
         if(err && err.code === 11000) return res.status(409).send('Email already exists');
         if (err) return res.status(500).send(err);
         expiresIn = 24 * 60 * 60;
@@ -29,8 +39,8 @@ exports.createUser = (req, res, next) => {
         }
         
         //response 
-        res.send ({dataUser});
-    });
+        res.render('index', {dataUser});
+    })
 }
 
 exports.loginUser = (req, res, next) =>{
