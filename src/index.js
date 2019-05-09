@@ -1,9 +1,12 @@
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
-const authRoutes = require('./routes/authRoutes');
 const properties = require('./config/props');
 const DB = require('./config/db');
 const bodyParser = require('body-parser');
+
+//Importing routes
+const authRoutes = require('./routes/authRoutes');
 
 //init DB
 DB();
@@ -15,14 +18,15 @@ const bodyParserURLEncoded = bodyParser.urlencoded({extended: true});
 const app = express();
 const router = express.Router();
 
+app.set('views', path.join(__dirname,'views'));
+app.set('view engine', 'ejs');
+
 app.use(cors());
 app.use(bodyParserJSON);
 app.use(bodyParserURLEncoded); 
 app.use('/api', router)
 authRoutes(router)
-router.get('/', (req, res)=> {
-    res.send('hello from home'); 
-});
+router.get('/', authRoutes);
 app.use(router);
 
 

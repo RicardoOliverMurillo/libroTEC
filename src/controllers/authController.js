@@ -3,15 +3,20 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const SECRET_KEY = 'secretkey123456';
 
+exports.loginPage = (req, res) =>{
+    res.render('index')
+}
+
 exports.createUser = (req, res, next) => {
     const newUser = {
         name : req.body.name,
         email : req.body.email,
-        password : bcrypt.hashSync(req.body.password)
+        password : bcrypt.hashSync(req.body.password),
+        role : req.body.role
     }
     Users.create(newUser, (err, user) => {
         if(err && err.code === 11000) return res.status(409).send('Email already exists');
-        if (err) return res.status(500).send('Server error');
+        if (err) return res.status(500).send(err);
         expiresIn = 24 * 60 * 60;
         const accessToken = jwt.sign({ id: user.id}, SECRET_KEY, {
             expiresIn: expiresIn
@@ -50,7 +55,12 @@ exports.loginUser = (req, res, next) =>{
                     accessToken: accessToken,
                     expiresIn: expiresIn
                 }
-                res.send({dataUser});
+                if(user.role === 'client'){
+                    res.render('UserViews/userView')  
+                } else {
+                    res.render('AdminViews/mainView')
+                }
+                
             }else{
                 //password wrong
                 res.status(409).send({message: 'something is wrong'});
