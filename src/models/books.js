@@ -6,13 +6,12 @@ const booksSchema = new Schema({
     idBook: {
         type: String,
         required: true, 
-        trim: true
+        trim: true,
+        unique: true
     },
     name: {
         type: String,
-        required: true, 
-        trim: true,
-        unique: true
+        required: true
     },
     topic: {
         type: String,
@@ -24,11 +23,11 @@ const booksSchema = new Schema({
         required: true
     },
     qSold: {
-        type:String,
+        type:Number,
         required: true
     },
     qAvailable: {
-        type:String,
+        type:Number,
         required: true
     },
     price: {
@@ -37,4 +36,4 @@ const booksSchema = new Schema({
     }
 });
 
-module.exports = booksSchema;
+module.exports = mongoose.model("Books", booksSchema);

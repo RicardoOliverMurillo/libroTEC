@@ -43,7 +43,7 @@ exports.createUser = async (req, res) => {
     })
 }
 
-exports.loginUser = (req, res, next) =>{
+exports.loginUser = (req, res) =>{
     const userData = {
         email : req.body.email,
         password : req.body.password
@@ -66,9 +66,9 @@ exports.loginUser = (req, res, next) =>{
                     expiresIn: expiresIn
                 }
                 if(user.role === 'client'){
-                    res.render('UserViews/userView')  
+                    res.render('UserViews/userView', {dataUser})  
                 } else {
-                    res.render('AdminViews/mainView')
+                    res.render('AdminViews/mainView', {dataUser})
                 }
                 
             }else{
@@ -76,5 +76,34 @@ exports.loginUser = (req, res, next) =>{
                 res.status(409).send({message: 'something is wrong'});
             }
         }
+    })
+}
+
+exports.findUser = async (req, res) =>{
+    const user = await Users.findOne({email: req.body.email}, (err, user) =>{
+        if (err){
+            console.log(err)
+        } else{
+            res.send({user});
+        }
+    })
+}
+
+exports.updateUserInfo = async (req, res) =>{
+    const newUser = {
+        idClient : req.body.idClient,
+        name : req.body.name,
+        last_name : req.body.last_name,
+        birth : req.body.birth,
+        type : req.body.type,
+        place : req.body.place,
+        email : req.body.email,
+        phone_number : req.body.phone_number,
+        password : bcrypt.hashSync(req.body.password)
+    }
+    const { id } = req.params;
+    await Users.update({_id : id}, newUser, (err)=>{
+        if(err) console.log(err);
+        res.send('updated')
     })
 }

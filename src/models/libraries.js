@@ -2,31 +2,34 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 mongoose.set('useCreateIndex', true);
 
-const salesSchema = new Schema({
-    idSale: {
+const librariesSchema = new Schema({
+    idLibrary: {
         type: String,
         required: true, 
         trim: true
     },
-    description: {
-        type: String,
-        required: true, 
-        trim: true,
-        unique: true
-    },
-    init_date: {
+    name: {
         type: String,
         required: true, 
         trim: true
     },
-    finish_date: {
+    country: {
+        type: String,
+        required: true, 
+        trim: true
+    },
+    location: {
         type:String,
         required: true
     },
-    per_disccount: {
-        type: Number,
+    telephone: {
+        type:String,
+        required: true
+    },
+    schedule: {
+        type:String,
         required: true
     }
 });
 
-module.exports = salesSchema;
+module.exports = mongoose.model("Libraries", librariesSchema);
