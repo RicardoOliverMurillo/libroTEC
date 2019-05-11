@@ -52,6 +52,7 @@ exports.createUser = async (req, res) => {
 }
 
 exports.loginUser = (req, res) =>{
+    console.log(req.body)
     const userData = {
         email : req.body.email,
         password : req.body.password
@@ -60,7 +61,7 @@ exports.loginUser = (req, res) =>{
         if (err) return res.status(500).send('Server error');
         if (!user) {
             //email doesn't exist
-            res.status(409).send({message: 'something is wrong'});
+            res.status(409).send({message: 'no user found'});
         } else{
             const resultPassword = bcrypt.compareSync(userData.password, user.password);
             if(resultPassword){
