@@ -7,4 +7,6 @@ module.exports = (router) => {
     router.post('/registerClient', Users.createUser);
     router.post('/login', Users.loginUser);
     router.post('/updateInfo/:id', Users.updateUserInfo);
+    router.get('/adminPage', Users.adminPage);
+    router.get('/userPage', Users.userPage);
 }

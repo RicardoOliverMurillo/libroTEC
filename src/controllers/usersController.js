@@ -3,6 +3,14 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const SECRET_KEY = 'secretkey123456';
 
+exports.adminPage = (req, res) =>{
+    res.render('AdminViews/mainView')
+}
+
+exports.userPage = (req, res) =>{
+    res.render('userViews/userView')
+}
+
 exports.loginPage = (req, res) =>{
     res.render('index')
 }
@@ -66,9 +74,9 @@ exports.loginUser = (req, res) =>{
                     expiresIn: expiresIn
                 }
                 if(user.role === 'client'){
-                    res.render('UserViews/userView', {dataUser})  
+                    res.redirect('/userPage')  
                 } else {
-                    res.render('AdminViews/mainView', {dataUser})
+                    res.redirect('/adminPage')
                 }
                 
             }else{
