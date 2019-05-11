@@ -61,7 +61,7 @@ exports.loginUser = (req, res) =>{
         if (err) return res.status(500).send('Server error');
         if (!user) {
             //email doesn't exist
-            res.status(409).send({message: 'no user found'});
+            res.status(409).send({message: 'Server error'});
         } else{
             const resultPassword = bcrypt.compareSync(userData.password, user.password);
             if(resultPassword){
