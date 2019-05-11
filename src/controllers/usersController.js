@@ -1,7 +1,11 @@
 const Users = require('../models/users');
+const Books = require('../models/books');
+const Books = require('../models/deliveries');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const SECRET_KEY = 'secretkey123456';
+
+var userGlobal = "";
 
 exports.loginPage = (req, res) =>{
     res.render('index')
@@ -43,11 +47,12 @@ exports.createUser = async (req, res) => {
     })
 }
 
-exports.loginUser = (req, res) =>{
+exports.loginUser = async(req, res) =>{
     const userData = {
         email : req.body.email,
         password : req.body.password
     }
+    const books = await Books.find();
     Users.findOne({email: userData.email}, (err, user)=>{
         if (err) return res.status(500).send('Server error');
         if (!user) {
@@ -66,7 +71,8 @@ exports.loginUser = (req, res) =>{
                     expiresIn: expiresIn
                 }
                 if(user.role === 'client'){
-                    res.render('UserViews/userView', {dataUser})  
+                    userGlobal = dataUser.email;
+                    res.render('UserViews/userView', {dataUser,books})  
                 } else {
                     res.render('AdminViews/mainView', {dataUser})
                 }
@@ -99,15 +105,69 @@ exports.updateUserInfo = async (req, res) =>{
         place : req.body.place,
         email : req.body.email,
         phone_number : req.body.phone_number,
-        password : bcrypt.hashSync(req.body.password)
     }
     const { id } = req.params;
-    await Users.update({_id : id}, newUser, (err)=>{
-        if(err) console.log(err);
-        res.send('updated')
-    })
+    if(req.body.password == ""){
+        await Users.update({_id : id}, {idClient:newUser.idClient,name:newUser.name,type:newUser.type,place:newUser.place,email:newUser.email, phone_number:newUser.phone_number}, (err)=>{
+            if(err) console.log(err);
+            res.redirect('/home')
+        })
+    }else{
+        const dataUser1 = await Users.find({email : userGlobal});
+        const dataUser = dataUser1[0];
+        const resultPassword = bcrypt.compareSync(req.body.password, dataUser.password);
+            if(resultPassword){
+                const password = bcrypt.hashSync(req.body.passwordNew)
+                await Users.update({_id : id}, {idClient:newUser.idClient,name:newUser.name,type:newUser.type,place:newUser.place,email:newUser.email, phone_number:newUser.phone_number, password:password}, (err)=>{
+                    if(err) console.log(err);
+                    res.redirect('/home')
+                })
+            }
+    }
+    
 }
 
-exports.home = (req, res) =>{
-    res.render('UserViews/userView')
+exports.updateView = async (req, res) =>{
+    const dataUser1 = await Users.find({email : userGlobal});
+    const dataUser = dataUser1[0];
+    res.render('UserViews/userInfo', {dataUser})
 }
+
+exports.home = async (req, res) =>{
+    const dataUser1 = await Users.find({email : userGlobal});
+    const dataUser = dataUser1[0];
+    const books = await Books.find();
+    res.render('UserViews/userView', {dataUser, books})
+}
+
+exports.deleteUser = async (req,res) =>{
+    const {id} = req.params;
+    await Users.remove({_id:id});
+    res.redirect("/");
+}
+
+exports.searchBooks = async(req,res) =>{
+    const dataUser1 = await Users.find({email : userGlobal});
+    const dataUser = dataUser1[0];
+
+    const library = req.query.library;
+    const name = req.query.name;
+    const topic = req.query.topic;
+    const price1 = req.query.price1;
+    const price2 = req.query.price2;
+    Books.find({$or: [{name:name}, {topic:topic},{price:{$gt: price1, $lt:price2}}]}, function(err, books) {
+        if (err) throw err;
+        res.render('UserViews/userView', {dataUser, books});
+    });  
+}
+
+exports.infoBooks = async(req,res)=>{
+    const dataUser1 = await Users.find({email : userGlobal});
+    const dataUser = dataUser1[0];
+
+    const {id} = req.params;
+    const book = await Books.findById(id);
+    bookGlobal = id;
+    res.render("UserViews/infoBook", {dataUser,book});
+}
+

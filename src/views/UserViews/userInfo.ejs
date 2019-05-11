@@ -1,0 +1,58 @@
+<% include partials/header%>
+
+<div class="container">
+    <div class="row">
+        <div class = "col-md-5 mx-auto">
+            <div class = "card">
+                <div class = "card-body">
+                    <form action="/updateInfo/<%= dataUser._id%>" method="POST">
+                        <div class="form-group">
+                            <label for="idClient">Cédula</label>
+                            <input type="text", name="idClient", value="<%= dataUser.idClient%>" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Nombre</label>
+                            <input type="text", name="name", value="<%= dataUser.name%>" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name">Apellido</label>
+                            <input type="text", name="last_name", value="<%= dataUser.last_name%>" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Tipo de cliente</label>
+                            <input type="text", name="type", value="<%= dataUser.type%>" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="place">Ubicación</label>
+                            <input type="text", name="place", value="<%= dataUser.place%>" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Correo electrónico</label>
+                            <input type="text", name="email", value="<%= dataUser.email%>" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone_number">Número de teléfono</label>
+                            <input type="text", name="phone_number", value="<%= dataUser.phone_number%>" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Contraseña actual</label>
+                            <input type="password", name="password", value="" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="passwordNew">Nueva contraseña</label>
+                            <input type="password", name="passwordNew", value="" class="form-control" >
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-success btn-block">Guardar</button>
+                        </div>
+                        <div>
+                            <a href="/deleteUser/<%= dataUser._id%>" class="btn btn-danger btn-block">Eliminar cuenta</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% include partials/footer%>

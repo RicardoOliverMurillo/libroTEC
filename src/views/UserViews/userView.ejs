@@ -1,16 +1,59 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>LibroTEC</title>
-        <!--BOOTSTRAP-->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">       
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" href="/home">LibroTEC</a>
+<% include partials/header%>
+
+<div class="container">
+    <div class="row">
+        <div class = "col-md-4 mx-auto">
+            <div class = "card">
+                <div class = "card-body">
+                    <form action="/searchBooks" method="GET">
+                        <div class="form-group">
+                            <input type="text", name="library", placeholder="Insertar librería" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text", name="name", placeholder="Insertar nombre" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text", name="topic", placeholder="Insertar tema" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text", name="price1", placeholder="Insertar precio mayor" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text", name="price2", placeholder="Insertar precio menor" class="form-control">
+                        </div>
+                        <button type= "submit", class="btn btn-info btn-block"> 
+                            Buscar 
+                        </button>
+                    </form>
+                </div>
             </div>
-        </nav>
-    </body>
-</html>
+        </div>
+        <div class = "col-md-8 mx-auto">
+            <table class = "table  table-sm table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Identificador</th>
+                        <th>Nombre</th>
+                        <th>Tema</th>
+                        <th>Ver</th>
+                    </tr>
+                </thead>
+                <body>
+                    <% for(var i = 0; i < books.length; i++) { %>
+                        <tr>
+                            <td><%= books[i].idBook %></td>
+                            <td><%= books[i].name %></td>
+                            <td><%= books[i].topic %></td>
+                            <td>
+                                <a href="infoBooks/<%= books[i]._id%>" class="btn btn-info">Ver</a>
+                            </td>
+                        </tr>
+                    <% } %> 
+                </body>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<% include partials/footer%>
