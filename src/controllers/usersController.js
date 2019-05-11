@@ -107,3 +107,7 @@ exports.updateUserInfo = async (req, res) =>{
         res.send('updated')
     })
 }
+
+exports.home = (req, res) =>{
+    res.render('UserViews/userView')
+}
