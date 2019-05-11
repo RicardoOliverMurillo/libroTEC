@@ -9,6 +9,14 @@ var userGlobal = "";
 //Variable global para partial de AgentViews
 var nameGlobal ="";
 
+exports.adminPage = (req, res) =>{
+    res.render('AdminViews/mainView')
+}
+
+exports.userPage = (req, res) =>{
+    res.render('userViews/userView')
+}
+
 exports.loginPage = (req, res) =>{
     res.render('index')
 }

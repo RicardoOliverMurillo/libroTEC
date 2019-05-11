@@ -16,5 +16,6 @@ module.exports = (router) => {
     router.get('/agentHome', Users.agentHome);
     router.get('/agentDeliveryDetails/:id', Users.agentDeliveryDetails);
     router.get('/agentDeliveryDetails/agentBookDetails/:id', Users.agentBookDetails);
-    
+    router.get('/adminPage', Users.adminPage);
+    router.get('/userPage', Users.userPage);
 }
