@@ -1,0 +1,16 @@
+<% include partials/header%>
+
+<ul class="list-group">
+    <li class="list-group-item">Identificador: <%= book.idBook%></li>
+    <li class="list-group-item">Nombre: <%= book.name%></li>
+    <li class="list-group-item">Tema: <%= book.topic%></li>
+    <li class="list-group-item">Descripción: <%= book.description%></li>
+    <li class="list-group-item">Cantidad vendida: <%= book.qSold%></li>
+    <li class="list-group-item">Cantidad disponible: <%= book.qAvailable%></li>
+    <li class="list-group-item">Cantidad precio: <%= book.price%></li>
+</ul>
+
+<div>
+    <a href="#" class="btn btn-success btn-block">Agregar al pedido</a>
+</div>
+<% include partials/footer%>
