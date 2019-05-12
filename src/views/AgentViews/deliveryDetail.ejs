@@ -6,7 +6,7 @@
             <ul class="list-group">
                 <li class="list-group-item">ID Pedido: <%= agentDelivery.idDelivery %></li>
                 <li class="list-group-item">ID Cliente: <%= agentDelivery.idClient %></li>
-                <li class="list-group-item">Fecha de Pedido: <%= agentDelivery.delivery_date %></li>
+                <li class="list-group-item">Fecha de Pedido: <%= agentDelivery.order_date %></li>
             </ul>
             <table class = "table  table-sm table-bordered table-hover">
                 <thead>
@@ -14,6 +14,8 @@
                         <th>Identificador</th>
                         <th>Nombre</th>
                         <th>Tema</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
                         <th>Ver</th>
                     </tr>
                 </thead>
@@ -23,6 +25,8 @@
                             <td><%= agentDeliveryBooks[i].idBook %></td>
                             <td><%= agentDeliveryBooks[i].name %></td>
                             <td><%= agentDeliveryBooks[i].topic %></td>
+                            <td><%= agentDeliveryBooks[i].description %></td>
+                            <td><%= agentDeliveryBooks[i].price %></td>
                             <td>
                                 <a href="#" class="btn btn-info">Ver</a>
                             </td>
@@ -32,7 +36,8 @@
             </table>
             <ul class="list-group"></ul>
                 <li class="list-group-item">Total: <%= agentDelivery.total %></li>
-                <li class="list-group-item">Locación: <%= agentDelivery.delivery_location %></li>
+                <li class="list-group-item">Fecha de Entrega: <%= agentDelivery.delivery_date %></li>
+                <li class="list-group-item">Ubicación: <%= agentDelivery.delivery_location %></li>
                 <li class="list-group-item">Estado: <%= agentDelivery.state %></li>
                 <li class="list-group-item">ID Libreria: <%= agentDelivery.idLibrary %></li>
             </ul>

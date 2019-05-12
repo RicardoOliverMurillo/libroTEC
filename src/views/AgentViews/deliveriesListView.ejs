@@ -11,7 +11,8 @@
                         <th>Fecha de Pedido</th>
                         <th>Libros</th>
                         <th>Total</th>
-                        <th>Locación</th>
+                        <th>Ubicación</th>
+                        <th>Fecha de entrega</th>
                         <th>Estado</th>
                         <th>ID Libreria</th>
                         <th>Carrito</th>
@@ -22,10 +23,11 @@
                         <tr>
                             <td><%= agentDeliveries[i].idDelivery %></td>
                             <td><%= agentDeliveries[i].idClient %></td>
-                            <td><%= agentDeliveries[i].delivery_date %></td>
+                            <td><%= agentDeliveries[i].order_date %></td>
                             <td><%= agentDeliveries[i].books.length %></td>
                             <td><%= agentDeliveries[i].total %></td>
                             <td><%= agentDeliveries[i].delivery_location %></td>
+                            <td><%= agentDeliveries[i].delivery_date %></td>
                             <td><%= agentDeliveries[i].state %></td>
                             <td><%= agentDeliveries[i].idLibrary %></td>
                             <td>
