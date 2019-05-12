@@ -35,7 +35,11 @@ const deliveriesSchema = new Schema({
     state: {
         type:String,
         required: true
+    },
+    idLibrary: {
+        type:String,
+        required: true
     }
 });
 
-module.exports = deliveriesSchema;
+module.exports = mongoose.model("Deliveries", deliveriesSchema);

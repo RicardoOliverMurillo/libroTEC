@@ -10,6 +10,7 @@ const userRoutes = require('./routes/usersRoutes');
 const booksRoutes = require('./routes/booksRoutes');
 const librariesRoutes = require('./routes/librariesRoutes');
 const salesRoutes = require('./routes/salesRoutes');
+const deliveriesRoutes = require('./routes/deliveriesRoutes');
 
 //init DB
 DB();
@@ -30,6 +31,8 @@ librariesRoutes(router)
 router.get('/libraries', librariesRoutes);
 salesRoutes(router)
 router.get('/sales', salesRoutes);
+deliveriesRoutes(router)
+router.get('/deliveries', deliveriesRoutes);
 
 
 //views engine

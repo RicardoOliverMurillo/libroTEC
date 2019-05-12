@@ -33,6 +33,10 @@ const booksSchema = new Schema({
     price: {
         type: Number,
         required: true
+    },
+    idLibrary:{
+        type:String,
+        required: true
     }
 });
 

@@ -1,0 +1,43 @@
+<% include partials/header%>
+
+<div class="container">
+    <div class="row">
+        <div class = "col-md-8 mx-auto">
+            <table class = "table  table-sm table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>ID Pedido</th>
+                        <th>ID Cliente</th>
+                        <th>Fecha de Pedido</th>
+                        <th>Libros</th>
+                        <th>Total</th>
+                        <th>Locación</th>
+                        <th>Estado</th>
+                        <th>ID Libreria</th>
+                        <th>Carrito</th>
+                    </tr>
+                </thead>
+                <body>
+                    <% for(var i = 0; i < deliveries.length; i++) { %>
+                        <tr>
+                            <td><%= deliveries[i].idDelivery %></td>
+                            <td><%= deliveries[i].idClient %></td>
+                            <td><%= deliveries[i].delivery_date %></td>
+                            <td><%= deliveries[i].books.length %></td>
+                            <td><%= deliveries[i].total %></td>
+                            <td><%= deliveries[i].delivery_location %></td>
+                            <td><%= deliveries[i].state %></td>
+                            <td><%= deliveries[i].idLibrary %></td>
+                            <td>
+                                <a href="#" class="btn btn-info">Ver</a>
+                            </td>
+                        </tr>
+                    <% } %> 
+                </body>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<% include partials/footer%>

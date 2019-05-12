@@ -1,5 +1,6 @@
 const Users = require('../models/users');
 const Books = require('../models/books');
+const Deliveries = require('../models/deliveries');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const SECRET_KEY = 'secretkey123456';
@@ -52,6 +53,7 @@ exports.loginUser = async(req, res) =>{
         password : req.body.password
     }
     const books = await Books.find();
+    const deliveries = await Deliveries.find();
     Users.findOne({email: userData.email}, (err, user)=>{
         if (err) return res.status(500).send('Server error');
         if (!user) {
@@ -72,7 +74,11 @@ exports.loginUser = async(req, res) =>{
                 if(user.role === 'client'){
                     userGlobal = dataUser.email;
                     res.render('UserViews/userView', {dataUser,books})  
-                } else {
+                } else if (user.role === 'agent'){
+                    userGlobal = dataUser.email;
+                    res.render('AgentViews/deliveriesListView', {dataUser,deliveries})
+                }
+                else {
                     res.render('AdminViews/mainView', {dataUser})
                 }
                 
