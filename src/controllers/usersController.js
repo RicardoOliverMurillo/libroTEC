@@ -6,6 +6,8 @@ const bcrypt = require('bcryptjs');
 const SECRET_KEY = 'secretkey123456';
 
 var userGlobal = "";
+//Variable global para partial de AgentViews
+var nameGlobal ="";
 
 exports.loginPage = (req, res) =>{
     res.render('index')
@@ -53,7 +55,7 @@ exports.loginUser = async(req, res) =>{
         password : req.body.password
     }
     const books = await Books.find();
-    const deliveries = await Deliveries.find();
+    const agentDeliveries = await Deliveries.find();
     Users.findOne({email: userData.email}, (err, user)=>{
         if (err) return res.status(500).send('Server error');
         if (!user) {
@@ -74,9 +76,11 @@ exports.loginUser = async(req, res) =>{
                 if(user.role === 'client'){
                     userGlobal = dataUser.email;
                     res.render('UserViews/userView', {dataUser,books})  
+                //Redireccionamiento a AgentViews
                 } else if (user.role === 'agent'){
                     userGlobal = dataUser.email;
-                    res.render('AgentViews/deliveriesListView', {dataUser,deliveries})
+                    nameGlobal = dataUser.name;
+                    res.render('AgentViews/deliveriesListView', {nameGlobal, dataUser,agentDeliveries})
                 }
                 else {
                     res.render('AdminViews/mainView', {dataUser})
@@ -176,3 +180,22 @@ exports.infoBooks = async(req,res)=>{
     res.render("UserViews/infoBook", {dataUser,book});
 }
 
+//AGENT FUNTIONS
+exports.agentHome = async(req, res) =>{
+    const agentDeliveries = await Deliveries.find();
+    res.render('AgentViews/deliveriesListView', {nameGlobal,agentDeliveries});
+}
+
+exports.agentDeliveryDetails = async(req,res)=>{
+    const dataUser1 = await Users.find({email : userGlobal});
+    const dataUser = dataUser1[0];
+    const {id} = req.params;
+    const agentDelivery= await Deliveries.findById(id);
+    const agentDeliveryBooks = [];
+    for(var i = 0; i < agentDelivery.books.length; i++){
+        const book = await Books.find({idBook : agentDelivery.books[i]});
+        agentDeliveryBooks[i] = book[0];
+    };
+    agentDeliveryGlobal = id;
+    res.render("AgentViews/deliveryDetail", {dataUser,nameGlobal,agentDelivery,agentDeliveryBooks});
+}

@@ -10,7 +10,7 @@ exports.createDelivery = async (req, res) => {
 
 exports.getDeliveries = async (req, res) => {
     const deliveries = await Deliveries.find();
-    res.render('AgentViews/deliveriesListView', {deliveries});
+    res.send({deliveries});
 }
 
 exports.deleteDelivery = async (req, res) => {

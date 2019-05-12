@@ -18,18 +18,18 @@
                     </tr>
                 </thead>
                 <body>
-                    <% for(var i = 0; i < deliveries.length; i++) { %>
+                    <% for(var i = 0; i < agentDeliveries.length; i++) { %>
                         <tr>
-                            <td><%= deliveries[i].idDelivery %></td>
-                            <td><%= deliveries[i].idClient %></td>
-                            <td><%= deliveries[i].delivery_date %></td>
-                            <td><%= deliveries[i].books.length %></td>
-                            <td><%= deliveries[i].total %></td>
-                            <td><%= deliveries[i].delivery_location %></td>
-                            <td><%= deliveries[i].state %></td>
-                            <td><%= deliveries[i].idLibrary %></td>
+                            <td><%= agentDeliveries[i].idDelivery %></td>
+                            <td><%= agentDeliveries[i].idClient %></td>
+                            <td><%= agentDeliveries[i].delivery_date %></td>
+                            <td><%= agentDeliveries[i].books.length %></td>
+                            <td><%= agentDeliveries[i].total %></td>
+                            <td><%= agentDeliveries[i].delivery_location %></td>
+                            <td><%= agentDeliveries[i].state %></td>
+                            <td><%= agentDeliveries[i].idLibrary %></td>
                             <td>
-                                <a href="#" class="btn btn-info">Ver</a>
+                                <a href="agentDeliveryDetails/<%= agentDeliveries[i]._id%>" class="btn btn-info">Ver</a>
                             </td>
                         </tr>
                     <% } %> 

@@ -1,0 +1,43 @@
+<% include partials/header%>
+
+<div class="container">
+    <div class="row">
+        <div class = "col-md-8 mx-auto">
+            <ul class="list-group">
+                <li class="list-group-item">ID Pedido: <%= agentDelivery.idDelivery %></li>
+                <li class="list-group-item">ID Cliente: <%= agentDelivery.idClient %></li>
+                <li class="list-group-item">Fecha de Pedido: <%= agentDelivery.delivery_date %></li>
+            </ul>
+            <table class = "table  table-sm table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Identificador</th>
+                        <th>Nombre</th>
+                        <th>Tema</th>
+                        <th>Ver</th>
+                    </tr>
+                </thead>
+                <body>
+                    <% for(var i = 0; i < agentDeliveryBooks.length; i++) { %>
+                        <tr>
+                            <td><%= agentDeliveryBooks[i].idBook %></td>
+                            <td><%= agentDeliveryBooks[i].name %></td>
+                            <td><%= agentDeliveryBooks[i].topic %></td>
+                            <td>
+                                <a href="#" class="btn btn-info">Ver</a>
+                            </td>
+                        </tr>
+                    <% } %> 
+                </body>
+            </table>
+            <ul class="list-group"></ul>
+                <li class="list-group-item">Total: <%= agentDelivery.total %></li>
+                <li class="list-group-item">Locación: <%= agentDelivery.delivery_location %></li>
+                <li class="list-group-item">Estado: <%= agentDelivery.state %></li>
+                <li class="list-group-item">ID Libreria: <%= agentDelivery.idLibrary %></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<% include partials/footer%>
