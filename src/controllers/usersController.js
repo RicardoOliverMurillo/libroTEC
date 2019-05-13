@@ -199,3 +199,12 @@ exports.agentDeliveryDetails = async(req,res)=>{
     agentDeliveryGlobal = id;
     res.render("AgentViews/deliveryDetail", {dataUser,nameGlobal,agentDelivery,agentDeliveryBooks});
 }
+
+exports.agentBookDetails = async(req,res)=>{
+    const dataUser1 = await Users.find({email : userGlobal});
+    const dataUser = dataUser1[0];
+    const {id} = req.params;
+    const agentBook = await Books.findById(id);
+    agentBookGlobal = id;
+    res.render("AgentViews/bookDetail", {dataUser,nameGlobal,agentBook});
+}

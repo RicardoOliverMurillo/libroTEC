@@ -15,5 +15,6 @@ module.exports = (router) => {
     //Rutas para vistas de Agente
     router.get('/agentHome', Users.agentHome);
     router.get('/agentDeliveryDetails/:id', Users.agentDeliveryDetails);
+    router.get('/agentDeliveryDetails/agentBookDetails/:id', Users.agentBookDetails);
     
 }

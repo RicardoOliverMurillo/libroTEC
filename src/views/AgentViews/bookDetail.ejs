@@ -1,0 +1,19 @@
+<% include partials/header%>
+
+<div class="container">
+    <div class="row">
+        <div class = "col-md-8 mx-auto">
+            <ul class="list-group">
+                <li class="list-group-item">Identificador: <%= agentBook.idBook%></li>
+                <li class="list-group-item">Nombre: <%= agentBook.name%></li>
+                <li class="list-group-item">Tema: <%= agentBook.topic%></li>
+                <li class="list-group-item">Descripción: <%= agentBook.description%></li>
+                <li class="list-group-item">Cantidad vendida: <%= agentBook.qSold%></li>
+                <li class="list-group-item">Cantidad disponible: <%= agentBook.qAvailable%></li>
+                <li class="list-group-item">Cantidad precio: <%= agentBook.price%></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+<% include partials/footer%>
