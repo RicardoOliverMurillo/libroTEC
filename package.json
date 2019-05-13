@@ -19,13 +19,12 @@
   },
   "homepage": "https://github.com/RicardoOliverMurillo/libroTEC#readme",
   "dependencies": {
-    "@google-cloud/translate": "^3.0.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
-    "jsonwebtoken": "^8.5.1",
+    "n": "^8.5.1",
     "mongoose": "^5.5.7"
   },
   "devDependencies": {

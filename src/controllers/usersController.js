@@ -1,6 +1,5 @@
 const Users = require('../models/users');
 const Books = require('../models/books');
-const Books = require('../models/deliveries');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const SECRET_KEY = 'secretkey123456';
