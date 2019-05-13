@@ -53,6 +53,10 @@ const userSchema = new Schema({
         type:String,
         required: true,
         default: "client"
+    },
+    idLibrary: {
+        type:String,
+        required: true
     }
     },{
     timestamps: true
