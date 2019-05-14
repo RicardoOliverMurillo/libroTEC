@@ -1,0 +1,79 @@
+<% include partials/header%>
+<div class="container">
+    <div class="row">
+        <!--FORM-->
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/addBooks" method="POST">
+                        <div class="form-group">
+                            <input type="text" name="idBook" placeholder="Inserte el id del libro" class="form-control">
+                        </div>
+                        <div class="form-group">
+                                <input type="text" name="name" placeholder="Inserte el nombre del libro" class="form-control">
+                        </div>
+                        <div class="form-group">
+                                <input type="text" name="topic" placeholder="Inserte el tema del libro" class="form-control">
+                        </div>    
+                        <div class="form-group">
+                                <input type="text" name="description" placeholder="Inserte una descripción del libro" class="form-control">
+                        </div>
+                        <div class="form-group">
+                                <input type="text" name="qSold" placeholder="Inserte la cantidad vendida de libros" class="form-control">
+                        </div>
+                        <div class="form-group">
+                                <input type="text" name="qAvailable" placeholder="Inserte la cantidad de libros disponibles" class="form-control">
+                        </div>
+                        <div class="form-group">
+                                <input type="text" name="price" placeholder="Inserte el precio del libro" class="form-control">
+                        </div>
+                        <div class="form-group">
+                                <input type="text" name="idLibrary" placeholder="Inserte el id de la libreria" class="form-control">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-success btn-block">Agregar Libro</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--LIST-->
+        <div class="col-md-7">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                            <th>id del libro</th>
+                            <th>Nombre</th>
+                            <th>Tema</th>
+                            <th>Descripción</th>
+                            <th>Vendidos</th>
+                            <th>Disponibles</th>
+                            <th>Precio</th>
+                            <th>Librería</th>
+                            <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i = 0; i < books.length; i++){ %>
+                         <tr>
+                            <td><%= books[i].idBook%></td>
+                            <td><%= books[i].name%></td>
+                            <td><%= books[i].topic%></td>
+                            <td><%= books[i].description%></td>
+                            <td><%= books[i].qSold%></td>
+                            <td><%= books[i].qAvailable%></td>
+                            <td><%= books[i].price%></td>
+                            <td><%= books[i].idLibrary%></td>
+                            <td>
+                                <a href="/deleteBook/<%= books[i]._id%>" class="btn btn-danger">Eliminar</a>
+                                <a href="/editBook/<%= books[i]._id%>" class="btn btn-info">Modificar</a>
+                            </td>
+                         </tr>
+                        <%}%>    
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<% include partials/footer%>

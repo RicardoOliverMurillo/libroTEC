@@ -56,7 +56,7 @@ const userSchema = new Schema({
     },
     idLibrary: {
         type:String,
-        required: true
+        default: "1"
     }
     },{
     timestamps: true

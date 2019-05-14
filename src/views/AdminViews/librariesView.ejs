@@ -1,0 +1,70 @@
+<% include partials/header%>
+<div class="container">
+    <div class="row">
+        <!--FORM-->
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/addLibrary" method="POST">
+                        <div class="form-group">
+                            <input type="text" name="idLibrary" placeholder="Inserte el id de la librería" class="form-control">
+                        </div>
+                        <div class="form-group">
+                                <input type="text" name="name" placeholder="Inserte el nombre de la librería" class="form-control">
+                        </div>
+                        <div class="form-group">
+                                <input type="text" name="country" placeholder="Inserte país" class="form-control">
+                        </div>    
+                        <div class="form-group">
+                                <input type="text" name="location" placeholder="Inserte la ubicación" class="form-control">
+                        </div>
+                        <div class="form-group">
+                                <input type="text" name="telephone" placeholder="Inserte el teléfono" class="form-control">
+                        </div>
+                        <div class="form-group">
+                                <input type="text" name="schedule" placeholder="Inserte el horario" class="form-control">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-success btn-block">Agregar librería</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--LIST-->
+        <div class="col-md-7">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                            <th>Id librería</th>
+                            <th>Nombre</th>
+                            <th>País</th>
+                            <th>ubicación</th>
+                            <th>Teléfono</th>
+                            <th>Horario</th>
+                            <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i = 0; i < library.length; i++){ %>
+                         <tr>
+                            <td><%= library[i].idLibrary%></td>
+                            <td><%= library[i].name%></td>
+                            <td><%= library[i].country%></td>
+                            <td><%= library[i].location%></td>
+                            <td><%= library[i].telephone%></td>
+                            <td><%= library[i].schedule%></td>
+                            
+                            <td>
+                                <a href="/deleteLibrary/<%= library[i]._id%>" class="btn btn-danger">Eliminar</a>
+                                <a href="/editLibrary/<%= library[i]._id%>" class="btn btn-info">Modificar</a>
+                            </td>
+                         </tr>
+                        <%}%>    
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<% include partials/footer%>
