@@ -1,52 +1,39 @@
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Proyecto Básico</title>
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<% include partials/header%>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
-
-  </head>
-  <body>
-    <div class="d-flex" id="wrapper">
-
-      <!-- Sidebar -->
-      <div class="bg-light border-right" id="sidebar-wrapper">
-        <div class="sidebar-heading">Start Bootstrap </div>
-        <div class="list-group list-group-flush">
-          <a href="#" class="list-group-item list-group-item-action bg-dark">Dashboard</a>
-          <a href="#" class="list-group-item list-group-item-action bg-dark">Shortcuts</a>
-          <a href="#" class="list-group-item list-group-item-action bg-dark">Overview</a>
-          <a href="#" class="list-group-item list-group-item-action bg-dark">Events</a>
-          <a href="#" class="list-group-item list-group-item-action bg-dark">Profile</a>
-          <a href="#" class="list-group-item list-group-item-action bg-dark">Status</a>
+<div class="container">
+    <div class="row">
+        <div class = "col-md-4 mx-auto">
+            <div class = "card">
+                <div class = "card-body">
+                    <form action="/searchBooks" method="GET">
+                        <div class="form-group">
+                            <input type="text", name="library", placeholder="Insertar librería" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text", name="name", placeholder="Insertar nombre" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text", name="topic", placeholder="Insertar tema" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text", name="price1", placeholder="Insertar precio mayor" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text", name="price2", placeholder="Insertar precio menor" class="form-control">
+                        </div>
+                        <button type= "submit", class="btn btn-info btn-block"> 
+                            Buscar 
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
-      <!-- /#sidebar-wrapper -->
-  
-      <!-- Page Content -->
-      <div id="page-content-wrapper">
-  
-        <div class="container-fluid">
-          <h1 class="mt-4">Simple Sidebar</h1>
-          <p>The starting state of the menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will change.</p>
-          <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>. The top navbar is optional, and just for demonstration. Just create an element with the <code>#menu-toggle</code> ID which will toggle the menu when clicked.</p>
+        <div class = "col-md-8 mx-auto">
+            
+            
         </div>
-      </div>
-      <!-- /#page-content-wrapper -->
-  
     </div>
-    <!-- /#wrapper -->
+</div>
 
 
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-    
-    
-  </body>
-</html>
+<% include partials/footer%>

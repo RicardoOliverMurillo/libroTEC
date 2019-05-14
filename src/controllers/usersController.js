@@ -91,7 +91,9 @@ exports.loginUser = async(req, res) =>{
                     res.render('AgentViews/deliveriesListView', {nameGlobal, dataUser,agentDeliveries})
                 }
                 else {
-                    res.render('AdminViews/mainView', {dataUser})
+                    userGlobal = dataUser.email;
+                    nameGlobal = dataUser.name;
+                    res.render('AdminViews/mainView', {nameGlobal, dataUser})
                 }
                 
             }else{
@@ -216,3 +218,5 @@ exports.agentBookDetails = async(req,res)=>{
     agentBookGlobal = id;
     res.render("AgentViews/bookDetail", {dataUser,nameGlobal,agentBook});
 }
+
+//Admin Functions

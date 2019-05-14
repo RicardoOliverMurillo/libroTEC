@@ -1,0 +1,42 @@
+<% include Partials/header%>
+
+<div class="container">
+        <div class="row">
+            <!--FORM-->
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="/editBook/<%= book._id %>" method="POST">
+                            <div class="form-group">
+                                <input type="text" name="idBook" placeholder="Inserte el id del libro" class="form-control" value="<%= book.idBook%>">
+                            </div>
+                            <div class="form-group">
+                                    <input type="text" name="name" placeholder="Inserte el nombre del libro" class="form-control" value="<%= book.name%>">
+                            </div>
+                            <div class="form-group">
+                                    <input type="text" name="topic" placeholder="Inserte el tema del libro" class="form-control" value="<%= book.topic%>">
+                            </div>    
+                            <div class="form-group">
+                                    <input type="text" name="description" placeholder="Inserte una descripción del libro" class="form-control" value="<%= book.description%>">
+                            </div>
+                            <div class="form-group">
+                                    <input type="text" name="qSold" placeholder="Inserte la cantidad vendida de libros" class="form-control" value="<%= book.qSold%>">
+                            </div>
+                            <div class="form-group">
+                                    <input type="text" name="qAvailable" placeholder="Inserte la cantidad de libros disponibles" class="form-control" value="<%= book.qAvailable%>">
+                            </div>
+                            <div class="form-group">
+                                    <input type="text" name="price" placeholder="Inserte el precio del libro" class="form-control" value="<%= book.price%>">
+                            </div>
+                            <div class="form-group">
+                                    <input type="text" name="idLibrary" placeholder="Inserte el id de la libreria" class="form-control" value="<%= book.idLibrary%>">
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-success btn-block">Modificar Libro</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        
+<% include Partials/footer%>
