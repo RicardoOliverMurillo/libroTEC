@@ -12,4 +12,9 @@ module.exports = (router) => {
     router.post('/registerClient', Users.createUser);
     router.post('/login', Users.loginUser);
     router.post('/updateInfo/:id', Users.updateUserInfo);
+    //Rutas para vistas de Agente
+    router.get('/agentHome', Users.agentHome);
+    router.get('/agentDeliveryDetails/:id', Users.agentDeliveryDetails);
+    router.get('/agentDeliveryDetails/agentBookDetails/:id', Users.agentBookDetails);
+    
 }

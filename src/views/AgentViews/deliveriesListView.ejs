@@ -1,0 +1,45 @@
+<% include partials/header%>
+
+<div class="container">
+    <div class="row">
+        <div class = "col-md-8 mx-auto">
+            <table class = "table  table-sm table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>ID Pedido</th>
+                        <th>ID Cliente</th>
+                        <th>Fecha de Pedido</th>
+                        <th>Libros</th>
+                        <th>Total</th>
+                        <th>Ubicación</th>
+                        <th>Fecha de entrega</th>
+                        <th>Estado</th>
+                        <th>ID Libreria</th>
+                        <th>Carrito</th>
+                    </tr>
+                </thead>
+                <body>
+                    <% for(var i = 0; i < agentDeliveries.length; i++) { %>
+                        <tr>
+                            <td><%= agentDeliveries[i].idDelivery %></td>
+                            <td><%= agentDeliveries[i].idClient %></td>
+                            <td><%= agentDeliveries[i].order_date %></td>
+                            <td><%= agentDeliveries[i].books.length %></td>
+                            <td><%= agentDeliveries[i].total %></td>
+                            <td><%= agentDeliveries[i].delivery_location %></td>
+                            <td><%= agentDeliveries[i].delivery_date %></td>
+                            <td><%= agentDeliveries[i].state %></td>
+                            <td><%= agentDeliveries[i].idLibrary %></td>
+                            <td>
+                                <a href="agentDeliveryDetails/<%= agentDeliveries[i]._id%>" class="btn btn-info">Ver</a>
+                            </td>
+                        </tr>
+                    <% } %> 
+                </body>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<% include partials/footer%>

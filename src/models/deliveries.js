@@ -13,7 +13,7 @@ const deliveriesSchema = new Schema({
         required: true, 
         trim: true
     },
-    delivery_date: {
+    order_date: {
         type: String,
         required: true, 
         trim: true
@@ -28,14 +28,25 @@ const deliveriesSchema = new Schema({
         required: true, 
         trim: true
     },
-    delivery_location: {
+    state: {
         type:String,
         required: true
     },
-    state: {
+    delivery_location: {
+        type:String,
+        required: true,
+        default: "Sin ubicación asignada"
+    },
+    delivery_date: {
+        type: String,
+        required: true, 
+        trim: true,
+        default: "Sin fecha de entrega asignada"
+    },
+    idLibrary: {
         type:String,
         required: true
     }
 });
 
-module.exports = deliveriesSchema;
+module.exports = mongoose.model("Deliveries", deliveriesSchema);
