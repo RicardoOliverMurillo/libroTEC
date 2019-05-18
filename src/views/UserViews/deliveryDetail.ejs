@@ -1,0 +1,44 @@
+<% include partials/header%>
+
+<div class="container">
+        <div class="row">
+            <div class = "col-md-8 mx-auto">
+                <ul class="list-group">
+                    <li class="list-group-item">ID Pedido: <%= clientDelivery._id %></li>
+                    <li class="list-group-item">ID Cliente: <%= clientDelivery.idUser %></li>
+                    <li class="list-group-item">Fecha de Pedido: <%= clientDelivery.order_date %></li>
+                </ul>
+                <table class = "table  table-sm table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Identificador</th>
+                            <th>Nombre</th>
+                            <th>Tema</th>
+                            <th>Descripción</th>
+                            <th>Precio</th>
+                        </tr>
+                    </thead>
+                    <body>
+                        <% for(var i = 0; i < clientDeliveryBooks.length; i++) { %>
+                            <tr>
+                                <td><%= clientDeliveryBooks[i].idBook %></td>
+                                <td><%= clientDeliveryBooks[i].name %></td>
+                                <td><%= clientDeliveryBooks[i].topic %></td>
+                                <td><%= clientDeliveryBooks[i].description %></td>
+                                <td><%= clientDeliveryBooks[i].price %></td>
+                            </tr>
+                        <% } %> 
+                    </body>
+                </table>
+                <ul class="list-group"></ul>
+                    <li class="list-group-item">Total: <%= clientDelivery.total %></li>
+                    <li class="list-group-item">Fecha de Entrega: <%= clientDelivery.delivery_date %></li>
+                    <li class="list-group-item">Ubicación: <%= clientDelivery.delivery_location %></li>
+                    <li class="list-group-item">Estado: <%= clientDelivery.state %></li>
+                    <li class="list-group-item">ID Libreria: <%= clientDelivery.idLibrary %></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+<% include partials/footer%>

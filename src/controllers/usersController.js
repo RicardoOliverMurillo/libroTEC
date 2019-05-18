@@ -6,6 +6,8 @@ const bcrypt = require('bcryptjs');
 const SECRET_KEY = 'secretkey123456';
 
 var userGlobal = "";
+var idBookGlobal = "";
+var pedido = [];
 //Variable global para partial de AgentViews
 var nameGlobal ="";
 var userIdLibrary = "";
@@ -189,8 +191,76 @@ exports.infoBooks = async(req,res)=>{
 
     const {id} = req.params;
     const book = await Books.findById(id);
-    bookGlobal = id;
+    idBookGlobal = book.idBook;
     res.render("UserViews/infoBook", {dataUser,book});
+}
+
+exports.addBookDelivery = (req,res)=>{
+    pedido.push(idBookGlobal);
+    console.log(pedido);
+    res.redirect("/home")
+}
+
+exports.viewDelivery = async(req,res)=>{
+    const dataUser1 = await Users.find({email : userGlobal});
+    const dataUser = dataUser1[0];
+
+    const books = [];
+    for(var i = 0; i < pedido.length; i++){
+        const book = await Books.find({idBook:pedido[i]});
+        books.push(book);
+    }
+    res.render("UserViews/deliveryInfo",{dataUser,books});
+}
+
+exports.addDelivery = async(req,res)=>{
+    const dataUser = await Users.find({email : userGlobal});
+    const idUser = dataUser[0].idUser;
+    var total = 0;
+
+    for(var i = 0; i < pedido.length; i++){
+        const book = await Books.find({idBook:pedido[i]});
+        console.log(book);
+        total = total + book[0].price;
+    }
+    var fechaPedido= new Date(); 
+
+    const deliveryNew = {
+        idUser:idUser,
+        order_date:fechaPedido,
+        books:pedido,
+        total:total
+    }
+    const delivery = new Deliveries(deliveryNew);
+    await delivery.save();
+    pedido = [];
+    res.redirect("/home");
+}
+
+exports.getDeliveriesClient = async(req,res)=>{
+    const dataUser1 = await Users.find({email : userGlobal});
+    const dataUser = dataUser1[0];
+    const deliveriesClient = await Deliveries.find({idUser:dataUser.idUser});
+    res.render("UserViews/myDeliveries",{deliveriesClient, dataUser});
+}
+
+exports.clientDeliveryDetails = async (req,res)=>{
+    const dataUser1 = await Users.find({email : userGlobal});
+    const dataUser = dataUser1[0];
+    const {id} = req.params;
+    const clientDelivery= await Deliveries.findById(id);
+    const clientDeliveryBooks = [];
+    for(var i = 0; i < clientDelivery.books.length; i++){
+        const book = await Books.find({idBook : clientDelivery.books[i]});
+        clientDeliveryBooks[i] = book[0];
+    };
+    res.render("UserViews/deliveryDetail", {dataUser,clientDelivery,clientDeliveryBooks});
+}
+
+exports.deleteDelivery = async(req,res)=>{
+    const {id} = req.params;
+    await Deliveries.remove({_id: id});
+    res.redirect("/getDeliveriesClient");
 }
 
 //AGENT FUNTIONS

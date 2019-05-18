@@ -1,0 +1,33 @@
+<% include partials/header%>
+
+<div class="container">
+    <div class="row">
+        <h3>Carrito de compra</h3>
+        <div class = "col-md-8 mx-auto">
+            <table class = "table  table-sm table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Identificador</th>
+                        <th>Nombre</th>
+                        <th>Tema</th>
+                    </tr>
+                </thead>
+                <body>
+                    <% for(var i = 0; i < books.length; i++) { %>
+                        <tr>
+                            <td><%= books[i][0].idBook %></td>
+                            <td><%= books[i][0].name %></td>
+                            <td><%= books[i][0].topic %></td>
+                        </tr>
+                    <% } %> 
+                </body>
+            </table>
+            <div>
+                <a href="/addDelivery" class="btn btn-success btn-block">Realizar compra</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<% include partials/footer%>
