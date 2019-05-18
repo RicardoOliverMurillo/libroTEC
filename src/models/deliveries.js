@@ -8,7 +8,7 @@ const deliveriesSchema = new Schema({
         required: false, 
         trim: true
     },
-    idClient: {
+    idUser: {
         type: String,
         required: true, 
         trim: true
