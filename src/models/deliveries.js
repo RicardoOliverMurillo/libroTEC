@@ -5,7 +5,7 @@ mongoose.set('useCreateIndex', true);
 const deliveriesSchema = new Schema({
     idDelivery: {
         type: String,
-        required: true, 
+        required: false, 
         trim: true
     },
     idClient: {
@@ -30,22 +30,22 @@ const deliveriesSchema = new Schema({
     },
     state: {
         type:String,
-        required: true
+        required: false
     },
     delivery_location: {
         type:String,
-        required: true,
+        required: false,
         default: "Sin ubicación asignada"
     },
     delivery_date: {
         type: String,
-        required: true, 
+        required: false, 
         trim: true,
         default: "Sin fecha de entrega asignada"
     },
     idLibrary: {
         type:String,
-        required: true
+        required: false
     }
 });
 

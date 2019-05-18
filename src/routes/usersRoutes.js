@@ -9,6 +9,12 @@ module.exports = (router) => {
     router.get('/deleteUser/:id', Users.deleteUser);
     router.get('/searchBooks',Users.searchBooks);
     router.get('/infoBooks/:id',Users.infoBooks);
+    router.get('/addBookDelivery',Users.addBookDelivery);
+    router.get('/viewDelivery',Users.viewDelivery);
+    router.get('/addDelivery', Users.addDelivery);
+    router.get('/getDeliveriesClient', Users.getDeliveriesClient);
+    router.get('/clientDeliveryDetails/:id', Users.clientDeliveryDetails);
+    router.get('/deleteDelivery/:id', Users.deleteDelivery);
     router.post('/registerClient', Users.createUser);
     router.post('/login', Users.loginUser);
     router.post('/updateInfo/:id', Users.updateUserInfo);
