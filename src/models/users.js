@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 mongoose.set('useCreateIndex', true);
 
 const userSchema = new Schema({
-    idClient: {
+    idUser: {
         type: Number,
         required: true, 
         trim: true

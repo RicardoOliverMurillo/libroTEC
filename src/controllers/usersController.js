@@ -8,6 +8,7 @@ const SECRET_KEY = 'secretkey123456';
 var userGlobal = "";
 //Variable global para partial de AgentViews
 var nameGlobal ="";
+var userIdLibrary = "";
 
 exports.adminPage = (req, res) =>{
     res.render('AdminViews/mainView')
@@ -27,7 +28,7 @@ exports.registerPage = (req, res) =>{
 
 exports.createUser = async (req, res) => {
     const newUser = {
-        idClient : req.body.idClient,
+        idUser : req.body.idUser,
         name : req.body.name,
         last_name : req.body.last_name,
         birth : req.body.birth,
@@ -63,7 +64,6 @@ exports.loginUser = async(req, res) =>{
         password : req.body.password
     }
     const books = await Books.find();
-    const agentDeliveries = await Deliveries.find();
     Users.findOne({email: userData.email}, (err, user)=>{
         if (err) return res.status(500).send('Server error');
         if (!user) {
@@ -78,6 +78,7 @@ exports.loginUser = async(req, res) =>{
                 const dataUser = {
                     name: user.name,
                     email: user.email,
+                    idLibrary: user.idLibrary,
                     accessToken: accessToken,
                     expiresIn: expiresIn
                 }
@@ -86,9 +87,11 @@ exports.loginUser = async(req, res) =>{
                     res.render('UserViews/userView', {dataUser,books})  
                 //Redireccionamiento a AgentViews
                 } else if (user.role === 'agent'){
+                    userIdLibrary = dataUser.idLibrary;
+                    console.log(userIdLibrary);
                     userGlobal = dataUser.email;
                     nameGlobal = dataUser.name;
-                    res.render('AgentViews/deliveriesListView', {nameGlobal, dataUser,agentDeliveries})
+                    res.redirect("/agentHome")
                 }
                 else {
                     userGlobal = dataUser.email;
@@ -116,7 +119,7 @@ exports.findUser = async (req, res) =>{
 
 exports.updateUserInfo = async (req, res) =>{
     const newUser = {
-        idClient : req.body.idClient,
+        idUser : req.body.idUser,
         name : req.body.name,
         last_name : req.body.last_name,
         birth : req.body.birth,
@@ -127,7 +130,7 @@ exports.updateUserInfo = async (req, res) =>{
     }
     const { id } = req.params;
     if(req.body.password == ""){
-        await Users.update({_id : id}, {idClient:newUser.idClient,name:newUser.name,type:newUser.type,place:newUser.place,email:newUser.email, phone_number:newUser.phone_number}, (err)=>{
+        await Users.update({_id : id}, {idUser:newUser.idUser,name:newUser.name,type:newUser.type,place:newUser.place,email:newUser.email, phone_number:newUser.phone_number}, (err)=>{
             if(err) console.log(err);
             res.redirect('/home')
         })
@@ -137,7 +140,7 @@ exports.updateUserInfo = async (req, res) =>{
         const resultPassword = bcrypt.compareSync(req.body.password, dataUser.password);
             if(resultPassword){
                 const password = bcrypt.hashSync(req.body.passwordNew)
-                await Users.update({_id : id}, {idClient:newUser.idClient,name:newUser.name,type:newUser.type,place:newUser.place,email:newUser.email, phone_number:newUser.phone_number, password:password}, (err)=>{
+                await Users.update({_id : id}, {idUser:newUser.idUser,name:newUser.name,type:newUser.type,place:newUser.place,email:newUser.email, phone_number:newUser.phone_number, password:password}, (err)=>{
                     if(err) console.log(err);
                     res.redirect('/home')
                 })
@@ -192,7 +195,7 @@ exports.infoBooks = async(req,res)=>{
 
 //AGENT FUNTIONS
 exports.agentHome = async(req, res) =>{
-    const agentDeliveries = await Deliveries.find();
+    const agentDeliveries = await Deliveries.find({idLibrary : userIdLibrary});
     res.render('AgentViews/deliveriesListView', {nameGlobal,agentDeliveries});
 }
 
@@ -206,8 +209,9 @@ exports.agentDeliveryDetails = async(req,res)=>{
         const book = await Books.find({idBook : agentDelivery.books[i]});
         agentDeliveryBooks[i] = book[0];
     };
+    const agentDeliveryClient = await Users.findOne({idUser : agentDelivery.idUser});
     agentDeliveryGlobal = id;
-    res.render("AgentViews/deliveryDetail", {dataUser,nameGlobal,agentDelivery,agentDeliveryBooks});
+    res.render("AgentViews/deliveryDetail", {dataUser,agentDeliveryClient,nameGlobal,agentDelivery,agentDeliveryBooks});
 }
 
 exports.agentBookDetails = async(req,res)=>{

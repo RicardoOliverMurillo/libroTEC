@@ -2,10 +2,37 @@
 
 <div class="container">
     <div class="row">
-        <div class = "col-md-8 mx-auto">
+        <div class = "col-md-10 mx-auto">
             <ul class="list-group">
                 <li class="list-group-item">ID Pedido: <%= agentDelivery.idDelivery %></li>
-                <li class="list-group-item">ID Cliente: <%= agentDelivery.idClient %></li>
+            </ul>
+            <table class = "table  table-sm table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Identificador</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Cumpleaños</th>
+                        <th>Tipo</th>
+                        <th>Ubicación</th>
+                        <th>Correo</th>
+                        <th>Telefono</th>
+                    </tr>
+                </thead>
+                <body>
+                        <tr>
+                            <td><%= agentDeliveryClient.idUser %></td>
+                            <td><%= agentDeliveryClient.name %></td>
+                            <td><%= agentDeliveryClient.last_name %></td>
+                            <td><%= agentDeliveryClient.birth %></td>
+                            <td><%= agentDeliveryClient.type %></td>
+                            <td><%= agentDeliveryClient.place %></td>
+                            <td><%= agentDeliveryClient.email %></td>
+                            <td><%= agentDeliveryClient.phone_number %></td>
+                        </tr>
+                </body>
+            </table>
+            <ul class="list-group">
                 <li class="list-group-item">Fecha de Pedido: <%= agentDelivery.order_date %></li>
             </ul>
             <table class = "table  table-sm table-bordered table-hover">
