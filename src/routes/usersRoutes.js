@@ -18,4 +18,7 @@ module.exports = (router) => {
     router.get('/agentDeliveryDetails/agentBookDetails/:id', Users.agentBookDetails);
     router.get('/adminPage', Users.adminPage);
     router.get('/userPage', Users.userPage);
+
+    //rutas para vistas de administradores
+    router.get('/AdminHome', Users.adminPage);
 }

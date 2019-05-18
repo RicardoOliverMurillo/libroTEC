@@ -219,4 +219,3 @@ exports.agentBookDetails = async(req,res)=>{
     res.render("AgentViews/bookDetail", {dataUser,nameGlobal,agentBook});
 }
 
-//Admin Functions

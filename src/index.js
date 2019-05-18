@@ -48,4 +48,4 @@ app.use('/api', router)
 app.use(router);
 
 
-app.listen(properties.PORT, ()=> console.log("Server on port ${properties.PORT}"));
+app.listen(properties.PORT, ()=> console.log(`Server on port ${properties.PORT}`));
