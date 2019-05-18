@@ -29,7 +29,7 @@ exports.registerPage = (req, res) =>{
 
 exports.createUser = async (req, res) => {
     const newUser = {
-        idClient : req.body.idClient,
+        idUser : req.body.idUser,
         name : req.body.name,
         last_name : req.body.last_name,
         birth : req.body.birth,
@@ -118,7 +118,7 @@ exports.findUser = async (req, res) =>{
 
 exports.updateUserInfo = async (req, res) =>{
     const newUser = {
-        idClient : req.body.idClient,
+        idUser : req.body.idUser,
         name : req.body.name,
         last_name : req.body.last_name,
         birth : req.body.birth,
@@ -129,7 +129,7 @@ exports.updateUserInfo = async (req, res) =>{
     }
     const { id } = req.params;
     if(req.body.password == ""){
-        await Users.update({_id : id}, {idClient:newUser.idClient,name:newUser.name,type:newUser.type,place:newUser.place,email:newUser.email, phone_number:newUser.phone_number}, (err)=>{
+        await Users.update({_id : id}, {idUser:newUser.idUser,name:newUser.name,type:newUser.type,place:newUser.place,email:newUser.email, phone_number:newUser.phone_number}, (err)=>{
             if(err) console.log(err);
             res.redirect('/home')
         })
@@ -139,7 +139,7 @@ exports.updateUserInfo = async (req, res) =>{
         const resultPassword = bcrypt.compareSync(req.body.password, dataUser.password);
             if(resultPassword){
                 const password = bcrypt.hashSync(req.body.passwordNew)
-                await Users.update({_id : id}, {idClient:newUser.idClient,name:newUser.name,type:newUser.type,place:newUser.place,email:newUser.email, phone_number:newUser.phone_number, password:password}, (err)=>{
+                await Users.update({_id : id}, {idUser:newUser.idUser,name:newUser.name,type:newUser.type,place:newUser.place,email:newUser.email, phone_number:newUser.phone_number, password:password}, (err)=>{
                     if(err) console.log(err);
                     res.redirect('/home')
                 })
@@ -212,7 +212,7 @@ exports.viewDelivery = async(req,res)=>{
 
 exports.addDelivery = async(req,res)=>{
     const dataUser = await Users.find({email : userGlobal});
-    const idClient = dataUser[0].idClient;
+    const idUser = dataUser[0].idUser;
     var total = 0;
 
     for(var i = 0; i < pedido.length; i++){
@@ -223,7 +223,7 @@ exports.addDelivery = async(req,res)=>{
     var fechaPedido= new Date(); 
 
     const deliveryNew = {
-        idClient:idClient,
+        idUser:idUser,
         order_date:fechaPedido,
         books:pedido,
         total:total
@@ -237,7 +237,7 @@ exports.addDelivery = async(req,res)=>{
 exports.getDeliveriesClient = async(req,res)=>{
     const dataUser1 = await Users.find({email : userGlobal});
     const dataUser = dataUser1[0];
-    const deliveriesClient = await Deliveries.find({idClient:dataUser.idClient});
+    const deliveriesClient = await Deliveries.find({idUser:dataUser.idUser});
     res.render("UserViews/myDeliveries",{deliveriesClient, dataUser});
 }
 
