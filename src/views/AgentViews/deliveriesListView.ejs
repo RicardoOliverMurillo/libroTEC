@@ -2,7 +2,7 @@
 
 <div class="container">
     <div class="row">
-        <div class = "col-md-8 mx-auto">
+        <div class = "col-md-10 mx-auto">
             <table class = "table  table-sm table-bordered table-hover">
                 <thead>
                     <tr>
@@ -16,13 +16,14 @@
                         <th>Estado</th>
                         <th>ID Libreria</th>
                         <th>Carrito</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
                 <body>
                     <% for(var i = 0; i < agentDeliveries.length; i++) { %>
                         <tr>
                             <td><%= agentDeliveries[i].idDelivery %></td>
-                            <td><%= agentDeliveries[i].idClient %></td>
+                            <td><%= agentDeliveries[i].idUser %></td>
                             <td><%= agentDeliveries[i].order_date %></td>
                             <td><%= agentDeliveries[i].books.length %></td>
                             <td><%= agentDeliveries[i].total %></td>
@@ -32,6 +33,9 @@
                             <td><%= agentDeliveries[i].idLibrary %></td>
                             <td>
                                 <a href="agentDeliveryDetails/<%= agentDeliveries[i]._id%>" class="btn btn-info">Ver</a>
+                            </td>
+                            <td>
+                                <a href="" class="btn btn-info">Procesar</a>
                             </td>
                         </tr>
                     <% } %> 
