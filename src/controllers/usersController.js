@@ -293,4 +293,66 @@ exports.agentBookDetails = async(req,res)=>{
     res.render("AgentViews/bookDetail", {dataUser,nameGlobal,agentBook});
 }
 
+exports.agentProcessView = async (req, res) =>{
+    const {id} = req.params;
+    const agentDelivery = await Deliveries.findById(id);
+    res.render('AgentViews/processDelivery', {agentDelivery,nameGlobal});
+}
+
+exports.agentProcessDelivery = async(req,res)=>{
+    console.log("Esta leyendo");
+    //const idDelivery = req.body.idDelivery;
+    const newDelivery = {
+        delivery_location : req.body.delivery_location,
+        delivery_date : req.body.delivery_date,
+    };
+    console.log("newDelivery");
+    console.log(newDelivery);
+    //const agentDelivery= await Deliveries.findOne({idDelivery:idDelivery});
+    console.log("req.params");
+    console.log(req.params);
+    const {id} = req.params;
+    console.log("{id}");
+    console.log({id});
+    console.log("id");
+    console.log(id);
+    const agentDelivery= await Deliveries.findById(id)
+    console.log("agentDelivery");
+    console.log(agentDelivery);
+    for(var i = 0; i < agentDelivery.books.length; i++){
+        console.log("Start round "+i);
+        const book = await Books.findOne({idBook : agentDelivery.books[i]});
+        console.log("book");
+        console.log(book );
+        //agentDeliveryBooks[i] = book[0];
+        const idBookLong = book._id;
+        console.log("idBookLong");
+        console.log(idBookLong);
+        const qSoldCopy = book.qSold;
+        console.log("qSoldCopy");
+        console.log(qSoldCopy);
+        const qAvailableCopy = book.qAvailable;
+        console.log("qAvailableCopy");
+        const qSold = qSoldCopy + 1;
+        console.log("new qSold");
+        console.log(qSold);
+        const qAvailable = qAvailableCopy - 1;
+        console.log("new qAvailable");
+        console.log(qAvailable);
+        await Books.updateOne({_id : idBookLong}, {$set:{qSold:qSold, qAvailable:qAvailable}})/*, (err)=>{
+            if(err) console.log(err);
+        })*/
+        console.log("Finish round "+i);
+    };
+    console.log("Finish Books update");
+    await Deliveries.updateOne({_id : id}, {$set:{delivery_location:newDelivery.delivery_location, delivery_date:newDelivery.delivery_date,state:"Procesado"}})/*, (err)=>{
+        if(err) console.log(err);
+        res.redirect('/agentHome')
+    })*/
+    console.log("Finish Dalivery update");
+    res.redirect('/agentHome')
+}
+
+
+
 //Admin Functions

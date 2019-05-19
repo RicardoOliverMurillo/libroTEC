@@ -22,6 +22,9 @@ module.exports = (router) => {
     router.get('/agentHome', Users.agentHome);
     router.get('/agentDeliveryDetails/:id', Users.agentDeliveryDetails);
     router.get('/agentDeliveryDetails/agentBookDetails/:id', Users.agentBookDetails);
+    router.get('/agentProcessView/:id', Users.agentProcessView);
+    router.get('/agentProcessView/agentProcessDelivery/:id', Users.agentProcessDelivery);
+    //Rutas para vistas de Admin
     router.get('/adminPage', Users.adminPage);
     router.get('/userPage', Users.userPage);
 }
