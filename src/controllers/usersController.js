@@ -10,6 +10,7 @@ var idBookGlobal = "";
 var pedido = [];
 //Variable global para partial de AgentViews
 var nameGlobal ="";
+var userIdLibrary = "";
 
 exports.adminPage = (req, res) =>{
     res.render('AdminViews/mainView')
@@ -65,7 +66,6 @@ exports.loginUser = async(req, res) =>{
         password : req.body.password
     }
     const books = await Books.find();
-    const agentDeliveries = await Deliveries.find();
     Users.findOne({email: userData.email}, (err, user)=>{
         if (err) return res.status(500).send('Server error');
         if (!user) {
@@ -80,6 +80,7 @@ exports.loginUser = async(req, res) =>{
                 const dataUser = {
                     name: user.name,
                     email: user.email,
+                    idLibrary: user.idLibrary,
                     accessToken: accessToken,
                     expiresIn: expiresIn
                 }
@@ -88,9 +89,11 @@ exports.loginUser = async(req, res) =>{
                     res.render('UserViews/userView', {dataUser,books})  
                 //Redireccionamiento a AgentViews
                 } else if (user.role === 'agent'){
+                    userIdLibrary = dataUser.idLibrary;
+                    console.log(userIdLibrary);
                     userGlobal = dataUser.email;
                     nameGlobal = dataUser.name;
-                    res.render('AgentViews/deliveriesListView', {nameGlobal, dataUser,agentDeliveries})
+                    res.redirect("/agentHome")
                 }
                 else {
                     userGlobal = dataUser.email;
@@ -262,7 +265,7 @@ exports.deleteDelivery = async(req,res)=>{
 
 //AGENT FUNTIONS
 exports.agentHome = async(req, res) =>{
-    const agentDeliveries = await Deliveries.find();
+    const agentDeliveries = await Deliveries.find({idLibrary : userIdLibrary});
     res.render('AgentViews/deliveriesListView', {nameGlobal,agentDeliveries});
 }
 
@@ -276,8 +279,9 @@ exports.agentDeliveryDetails = async(req,res)=>{
         const book = await Books.find({idBook : agentDelivery.books[i]});
         agentDeliveryBooks[i] = book[0];
     };
+    const agentDeliveryClient = await Users.findOne({idUser : agentDelivery.idUser});
     agentDeliveryGlobal = id;
-    res.render("AgentViews/deliveryDetail", {dataUser,nameGlobal,agentDelivery,agentDeliveryBooks});
+    res.render("AgentViews/deliveryDetail", {dataUser,agentDeliveryClient,nameGlobal,agentDelivery,agentDeliveryBooks});
 }
 
 exports.agentBookDetails = async(req,res)=>{
