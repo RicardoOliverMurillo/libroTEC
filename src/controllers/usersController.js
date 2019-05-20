@@ -4,6 +4,7 @@ const Deliveries = require('../models/deliveries');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const SECRET_KEY = 'secretkey123456';
+var moment = require('moment');
 
 var userGlobal = "";
 var idBookGlobal = "";
@@ -176,10 +177,23 @@ exports.searchBooks = async(req,res) =>{
     const topic = req.query.topic;
     const price1 = req.query.price1;
     const price2 = req.query.price2;
-    Books.find({$or: [{name:name}, {topic:topic},{price:{$gt: price1, $lt:price2}}]}, function(err, books) {
+    Books.find({$or: [{name:name},{idLibrary:library},{topic:topic},{price:{$gt : price2, $lt:price1}}]}, function(err, books) {
         if (err) throw err;
         res.render('UserViews/userView', {dataUser, books});
     });  
+}
+
+exports.searchReport = async(req,res) =>{
+    const dataUser1 = await Users.find({email : userGlobal});
+    const dataUser = dataUser1[0];
+
+    const date1 = req.query.date1;
+    const date2 = req.query.date2;
+    const state = req.query.state;
+
+    const deliveriesClient = await Deliveries.find({$or: [{state:state}, {order_date:{$gte : date1, $lte:date2}}]});
+    res.render('UserViews/reportView', {dataUser, deliveriesClient});
+
 }
 
 exports.infoBooks = async(req,res)=>{
@@ -221,13 +235,14 @@ exports.addDelivery = async(req,res)=>{
         total = total + book[0].price;
     }
     var fechaPedido= new Date(); 
-
+    
     const deliveryNew = {
         idUser:idUser,
         order_date:fechaPedido,
         books:pedido,
         total:total
     }
+
     const delivery = new Deliveries(deliveryNew);
     await delivery.save();
     pedido = [];
@@ -258,6 +273,23 @@ exports.deleteDelivery = async(req,res)=>{
     const {id} = req.params;
     await Deliveries.remove({_id: id});
     res.redirect("/getDeliveriesClient");
+}
+
+exports.reporte = async(req,res)=>{
+    const dataUser1 = await Users.find({email : userGlobal});
+    const dataUser = dataUser1[0];
+    const deliveriesClient = await Deliveries.find({idUser:dataUser.idUser});
+
+    res.render("UserViews/reportView", {dataUser,deliveriesClient});
+}
+
+exports.reporteDetails = async(req,res)=>{
+    const dataUser1 = await Users.find({email : userGlobal});
+    const dataUser = dataUser1[0];
+    const {id} = req.params;
+    const reportDetails= await Deliveries.findById(id);
+
+    res.render("UserViews/reportDetails", {dataUser,reportDetails});
 }
 
 //AGENT FUNTIONS
