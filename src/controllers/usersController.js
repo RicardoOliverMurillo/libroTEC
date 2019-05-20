@@ -307,8 +307,8 @@ exports.agentProcessDelivery = async(req,res)=>{
         delivery_date : req.body.delivery_date,
     };
 
-    const delivery_location = 'delivery_location';
-    const delivery_date = 'delivery_date';
+    /*const delivery_location = 'delivery_location';
+    const delivery_date = 'delivery_date';*/
     //console.log("newDelivery");
     //console.log(newDelivery);
     //const agentDelivery= await Deliveries.findOne({idDelivery:idDelivery});
@@ -330,6 +330,7 @@ exports.agentProcessDelivery = async(req,res)=>{
     //console.log("agentUser");
     //console.log(agentUser);
     const place = agentUser.place;
+    const email = agentUser.email;
     //console.log("place");
     //console.log(place);
 
@@ -379,7 +380,7 @@ exports.agentProcessDelivery = async(req,res)=>{
     });
     let HelperOptions = {
         from: '"LibroTEC" <tectrabajos2019@gmail.com>',
-        to: 'marcoleandro14@gmail.com',
+        to: email,
         subject: 'Pedido LibroTEC',
         text: 'Su pedido pronto estará a llegando a '+ place + '. Detalle de entrega: Fecha de entrega[' 
         + newDelivery.delivery_location + '], Lugar de entrega[' +newDelivery.delivery_date+']',
