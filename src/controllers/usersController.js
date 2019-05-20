@@ -353,6 +353,39 @@ exports.agentProcessDelivery = async(req,res)=>{
     res.redirect('/agentHome')
 }
 
+exports.agentClientsReport = async (req, res) =>{
+    const agentUsers = await Users.find({$and:[{idLibrary:userIdLibrary},{role:"client"}]});
+    res.render('AgentViews/clientsReport', {nameGlobal, agentUsers});
+}
 
+exports.searchClients = async(req,res) =>{
+    const idUser = req.query.idUser;
+    /*console.log("idUser");
+    console.log(idUser);*/
+    const name = req.query.name;
+    /*console.log("name");
+    console.log(name);*/
+    const last_name = req.query.last_name;
+    //console.log(last_name);
+    const birth = req.query.birth;
+    //console.log();
+    const type = req.query.type;
+    //console.log(type);
+    const place = req.query.place;
+    //console.log(place);
+    const phone_number = req.query.phone_number;
+    //console.log(phone_number);
+    const email = req.query.email;
+    //console.log(email);
+
+    Users.find({$and:[{$or: [{idUser:idUser},{name:name},{last_name:last_name},{birth:birth},{type:type},
+        {place:place},{phone_number:phone_number},{email:email}]},{idLibrary:userIdLibrary},{role:"client"}]}, 
+        function(err, agentUsers) {
+        if (err) throw err;
+        /*console.log("agentUsers");
+        console.log(agentUsers);*/
+        res.render('AgentViews/clientsReport', {nameGlobal, agentUsers});
+    });  
+}
 
 //Admin Functions
