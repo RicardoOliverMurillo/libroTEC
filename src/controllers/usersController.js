@@ -300,56 +300,98 @@ exports.agentProcessView = async (req, res) =>{
 }
 
 exports.agentProcessDelivery = async(req,res)=>{
-    console.log("Esta leyendo");
+    //console.log("Esta leyendo");
     //const idDelivery = req.body.idDelivery;
     const newDelivery = {
         delivery_location : req.body.delivery_location,
         delivery_date : req.body.delivery_date,
     };
-    console.log("newDelivery");
-    console.log(newDelivery);
+
+    const delivery_location = 'delivery_location';
+    const delivery_date = 'delivery_date';
+    //console.log("newDelivery");
+    //console.log(newDelivery);
     //const agentDelivery= await Deliveries.findOne({idDelivery:idDelivery});
-    console.log("req.params");
-    console.log(req.params);
+    //console.log("req.params");
+    //console.log(req.params);
     const {id} = req.params;
-    console.log("{id}");
-    console.log({id});
-    console.log("id");
-    console.log(id);
+    //console.log("{id}");
+    //console.log({id});
+    //console.log("id");
+    //console.log(id);
     const agentDelivery= await Deliveries.findById(id)
-    console.log("agentDelivery");
-    console.log(agentDelivery);
+    //console.log("agentDelivery");
+    //console.log(agentDelivery);
+
+    const idUser = agentDelivery.idUser;
+    //console.log("idUser");
+    //console.log(idUser);
+    const agentUser = await Users.findOne({idUser:idUser});
+    //console.log("agentUser");
+    //console.log(agentUser);
+    const place = agentUser.place;
+    //console.log("place");
+    //console.log(place);
+
     for(var i = 0; i < agentDelivery.books.length; i++){
-        console.log("Start round "+i);
+        //console.log("Start round "+i);
         const book = await Books.findOne({idBook : agentDelivery.books[i]});
-        console.log("book");
-        console.log(book );
+        //console.log("book");
+        //console.log(book );
         //agentDeliveryBooks[i] = book[0];
         const idBookLong = book._id;
-        console.log("idBookLong");
-        console.log(idBookLong);
+        //console.log("idBookLong");
+        //console.log(idBookLong);
         const qSoldCopy = book.qSold;
-        console.log("qSoldCopy");
-        console.log(qSoldCopy);
+        //console.log("qSoldCopy");
+        //console.log(qSoldCopy);
         const qAvailableCopy = book.qAvailable;
-        console.log("qAvailableCopy");
+        //console.log("qAvailableCopy");
         const qSold = qSoldCopy + 1;
-        console.log("new qSold");
-        console.log(qSold);
+        //console.log("new qSold");
+        //console.log(qSold);
         const qAvailable = qAvailableCopy - 1;
-        console.log("new qAvailable");
-        console.log(qAvailable);
+        //console.log("new qAvailable");
+        //console.log(qAvailable);
         await Books.updateOne({_id : idBookLong}, {$set:{qSold:qSold, qAvailable:qAvailable}})/*, (err)=>{
             if(err) console.log(err);
         })*/
-        console.log("Finish round "+i);
+        //console.log("Finish round "+i);
     };
-    console.log("Finish Books update");
+    //console.log("Finish Books update");
     await Deliveries.updateOne({_id : id}, {$set:{delivery_location:newDelivery.delivery_location, delivery_date:newDelivery.delivery_date,state:"Procesado"}})/*, (err)=>{
         if(err) console.log(err);
         res.redirect('/agentHome')
     })*/
-    console.log("Finish Dalivery update");
+    //console.log("Finish Dalivery update");
+    var nodemailer = require('nodemailer');
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        secure: false,
+        port: 25,
+        auth:{
+            user: 'tectrabajos2019@gmail.com',
+            pass: 'ati123456'
+        },
+        tls:{
+            rejectUnathorized: false
+        }
+    });
+    let HelperOptions = {
+        from: '"LibroTEC" <tectrabajos2019@gmail.com>',
+        to: 'marcoleandro14@gmail.com',
+        subject: 'Pedido LibroTEC',
+        text: 'Su pedido pronto estará a llegando a '+ place + '. Detalle de entrega: Fecha de entrega[' 
+        + newDelivery.delivery_location + '], Lugar de entrega[' +newDelivery.delivery_date+']',
+    };
+    transporter.sendMail(HelperOptions, (error, info) => {
+        if(error){
+            console.log(error);
+        }
+        console.log("Correo enviado");
+        console.log(info);
+    });
+
     res.redirect('/agentHome')
 }
 
