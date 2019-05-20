@@ -265,7 +265,7 @@ exports.deleteDelivery = async(req,res)=>{
 
 //AGENT FUNTIONS
 exports.agentHome = async(req, res) =>{
-    const agentDeliveries = await Deliveries.find({idLibrary : userIdLibrary});
+    const agentDeliveries = await Deliveries.find({idLibrary : userIdLibrary}).sort( { order_date: 1} );
     res.render('AgentViews/deliveriesListView', {nameGlobal,agentDeliveries});
 }
 
