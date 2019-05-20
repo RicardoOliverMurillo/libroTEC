@@ -14,8 +14,17 @@
                                     <input type="text" name="name" placeholder="Inserte el nombre del libro" class="form-control" value="<%= book.name%>">
                             </div>
                             <div class="form-group">
-                                    <input type="text" name="topic" placeholder="Inserte el tema del libro" class="form-control" value="<%= book.topic%>">
-                            </div>    
+                                <select class="browser-default custom-select" name="topic" value="<%= book.topic%>">
+                                    <option>Open this select menu</option>
+                                    <option>Ingeniería</option>
+                                    <option>Administración</option>
+                                    <option>Artes</option>
+                                    <option>Historia</option>
+                                    <option>Matemáticas</option>
+                                    <option>Ficción</option>
+                                    <option>Literatura</option>
+                                </select>
+                            </div>
                             <div class="form-group">
                                     <input type="text" name="description" placeholder="Inserte una descripción del libro" class="form-control" value="<%= book.description%>">
                             </div>
