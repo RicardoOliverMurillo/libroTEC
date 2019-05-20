@@ -358,7 +358,7 @@ exports.agentClientsReport = async (req, res) =>{
     res.render('AgentViews/clientsReport', {nameGlobal, agentUsers});
 }
 
-exports.searchClients = async(req,res) =>{
+exports.agentSearchClients = async(req,res) =>{
     const idUser = req.query.idUser;
     /*console.log("idUser");
     console.log(idUser);*/
@@ -386,6 +386,28 @@ exports.searchClients = async(req,res) =>{
         console.log(agentUsers);*/
         res.render('AgentViews/clientsReport', {nameGlobal, agentUsers});
     });  
+}
+
+exports.agentDeliveriesReport = async(req,res)=>{
+    const agentDeliveries = await Deliveries.find({idLibrary:userIdLibrary});
+    res.render("AgentViews/deliveriesReport", {nameGlobal,agentDeliveries});
+}
+
+exports.agentSearchDeliveriesReport = async(req,res) =>{
+    const idUser = req.query.idUser;
+    const date1 = req.query.date1;
+    const date2 = req.query.date2;
+    const topic = req.query.topic;
+    /*console.log("topic");
+    console.log(topic);
+    if (topic == ""){
+        console.log("funciona");
+    };*/
+    const state = req.query.state;
+
+    const agentDeliveries = await Deliveries.find({$and:[{$or: [{state:state},{idUser:idUser},{order_date:{$gte : date1, $lte:date2}}]},{idLibrary:userIdLibrary}]});
+    res.render("AgentViews/deliveriesReport", {nameGlobal,agentDeliveries});
+
 }
 
 //Admin Functions
