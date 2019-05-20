@@ -1,0 +1,38 @@
+<% include partials/header%>
+
+<div class="container">
+    <div class="row">
+        <div>
+            <form class="form-inline my-2 my-lg-5" action="/rangeByClient" method="GET" >
+                <input class="form-control mr-sm-10" name="busqueda" type="search" placeholder="Buscar..." aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+            </form>
+        </div>
+        <!--LIST-->
+        <div class="col-md-7">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                            <th>ID Cliente</th>
+                            <th>Pedido Mínimo</th>
+                            <th>Pedido Máximo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tbody>
+                            <% for(var i = 0; i < rangeInfo.length; i++) { %>
+                                <tr>
+                                    <td><%= rangeInfo[i][0] %></td>
+                                    <td><%= rangeInfo[i][1] %></td>
+                                    <td><%= rangeInfo[i][2] %></td>
+                                </tr>
+                            <% } %> 
+                    </tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<% include Partials/footer%>

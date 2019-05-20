@@ -4,13 +4,13 @@ exports.createSale = async (req, res) => {
     const sale = new Sale(req.body);
     await sale.save((err, sale)=>{
         if(err) console.log(err);
-        res.send({sale})
+        res.redirect('/sales')
     })
 }
 
 exports.getSales = async (req, res) => {
-    const sale = await Sale.find();
-    res.send({sale});
+    const sales = await Sale.find();
+    res.render('AdminViews/salesView', {sales});
 }
 
 exports.deleteSale = async (req, res) => {
@@ -19,7 +19,7 @@ exports.deleteSale = async (req, res) => {
         if(err){
             console.log(err);
         } else{
-            res.send("deleted");
+            res.redirect('/sales');
         }
     });
 }
@@ -30,7 +30,7 @@ exports.findSale = async (req,res)=>{
         if (err){
             console.log(err);
         } else{
-            res.send({sale});
+            res.render('AdminViews/updateSaleView', {sale});
         }
     });
 }
@@ -39,6 +39,6 @@ exports.updateSale = async (req, res) => {
     const { id } = req.params;
     await Sale.update({_id : id}, req.body, (err)=>{
         if(err) console.log(err);
-        res.send('updated')
+        res.redirect('/sales');
     })
 }

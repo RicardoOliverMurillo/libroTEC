@@ -14,7 +14,7 @@ const deliveriesSchema = new Schema({
         trim: true
     },
     order_date: {
-        type: String,
+        type: Date,
         required: true, 
         trim: true
     },
@@ -30,7 +30,8 @@ const deliveriesSchema = new Schema({
     },
     state: {
         type:String,
-        required: false
+        required: true,
+        default : 'En proceso'
     },
     delivery_location: {
         type:String,

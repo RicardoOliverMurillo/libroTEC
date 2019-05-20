@@ -1,0 +1,64 @@
+<% include partials/header%>
+<div class="container">
+    <div class="row">
+        <!--FORM-->
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/addSale" method="POST">
+                        <div class="form-group">
+                            <input type="text" name="idSale" placeholder="Inserte el id de la promoción" class="form-control">
+                        </div>
+                        <div class="form-group">
+                                <input type="text" name="description" placeholder="Inserte la descripción de la promoción" class="form-control">
+                        </div>
+                        <div class="form-group">
+                                <input type="date" name="init_date" placeholder="Inserte la fecha de inicio" class="form-control">
+                        </div>    
+                        <div class="form-group">
+                                <input type="date" name="finish_date" placeholder="Inserte la fecha de finalización" class="form-control">
+                        </div>
+                        <div class="form-group">
+                                <input type="text" name="per_disccount" placeholder="Inserte el % de descuento" class="form-control">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-success btn-block">Agregar Promoción</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--LIST-->
+        <div class="col-md-7">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                            <th>ID de la promoción</th>
+                            <th>Descripción</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha finalización</th>
+                            <th>% de descuento</th>
+                            <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i = 0; i < sales.length; i++){ %>
+                         <tr>
+                            <td><%= sales[i].idSale%></td>
+                            <td><%= sales[i].description%></td>
+                            <td><%= sales[i].init_date%></td>
+                            <td><%= sales[i].finish_date%></td>
+                            <td><%= sales[i].per_disccount%></td>
+                            <td>
+                                <a href="/deleteSale/<%= sales[i]._id%>" class="btn btn-danger">Eliminar</a>
+                                <a href="/editSale/<%= sales[i]._id%>" class="btn btn-info">Modificar</a>
+                            </td>
+                         </tr>
+                        <%}%>    
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<% include partials/footer%>

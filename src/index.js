@@ -11,6 +11,7 @@ const booksRoutes = require('./routes/booksRoutes');
 const librariesRoutes = require('./routes/librariesRoutes');
 const salesRoutes = require('./routes/salesRoutes');
 const deliveriesRoutes = require('./routes/deliveriesRoutes');
+const requestsRoutes = require('./routes/requestsRoutes');
 
 //init DB
 DB();
@@ -33,7 +34,8 @@ salesRoutes(router)
 router.get('/sales', salesRoutes);
 deliveriesRoutes(router)
 router.get('/deliveries', deliveriesRoutes);
-
+requestsRoutes(router)
+router.get('/requests', requestsRoutes);
 
 //views engine
 app.set('views', path.join(__dirname,'views'));
@@ -48,4 +50,4 @@ app.use('/api', router)
 app.use(router);
 
 
-app.listen(properties.PORT, ()=> console.log("Server on port ${properties.PORT}"));
+app.listen(properties.PORT, ()=> console.log(`Server on port ${properties.PORT}`));
