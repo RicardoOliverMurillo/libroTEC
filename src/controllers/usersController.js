@@ -296,7 +296,7 @@ exports.reporteDetails = async(req,res)=>{
 
 //AGENT FUNTIONS
 exports.agentHome = async(req, res) =>{
-    const agentDeliveries = await Deliveries.find({idLibrary : userIdLibrary});
+    const agentDeliveries = await Deliveries.find({idLibrary : userIdLibrary}).sort( { order_date: 1} );
     res.render('AgentViews/deliveriesListView', {nameGlobal,agentDeliveries});
 }
 
@@ -324,3 +324,164 @@ exports.agentBookDetails = async(req,res)=>{
     res.render("AgentViews/bookDetail", {dataUser,nameGlobal,agentBook});
 }
 
+exports.agentProcessView = async (req, res) =>{
+    const {id} = req.params;
+    const agentDelivery = await Deliveries.findById(id);
+    res.render('AgentViews/processDelivery', {agentDelivery,nameGlobal});
+}
+
+exports.agentProcessDelivery = async(req,res)=>{
+    //console.log("Esta leyendo");
+    //const idDelivery = req.body.idDelivery;
+    const newDelivery = {
+        delivery_location : req.body.delivery_location,
+        delivery_date : req.body.delivery_date,
+    };
+
+    /*const delivery_location = 'delivery_location';
+    const delivery_date = 'delivery_date';*/
+    //console.log("newDelivery");
+    //console.log(newDelivery);
+    //const agentDelivery= await Deliveries.findOne({idDelivery:idDelivery});
+    //console.log("req.params");
+    //console.log(req.params);
+    const {id} = req.params;
+    //console.log("{id}");
+    //console.log({id});
+    //console.log("id");
+    //console.log(id);
+    const agentDelivery= await Deliveries.findById(id)
+    //console.log("agentDelivery");
+    //console.log(agentDelivery);
+
+    const idUser = agentDelivery.idUser;
+    //console.log("idUser");
+    //console.log(idUser);
+    const agentUser = await Users.findOne({idUser:idUser});
+    //console.log("agentUser");
+    //console.log(agentUser);
+    const place = agentUser.place;
+    const email = agentUser.email;
+    //console.log("place");
+    //console.log(place);
+
+    for(var i = 0; i < agentDelivery.books.length; i++){
+        //console.log("Start round "+i);
+        const book = await Books.findOne({idBook : agentDelivery.books[i]});
+        //console.log("book");
+        //console.log(book );
+        //agentDeliveryBooks[i] = book[0];
+        const idBookLong = book._id;
+        //console.log("idBookLong");
+        //console.log(idBookLong);
+        const qSoldCopy = book.qSold;
+        //console.log("qSoldCopy");
+        //console.log(qSoldCopy);
+        const qAvailableCopy = book.qAvailable;
+        //console.log("qAvailableCopy");
+        const qSold = qSoldCopy + 1;
+        //console.log("new qSold");
+        //console.log(qSold);
+        const qAvailable = qAvailableCopy - 1;
+        //console.log("new qAvailable");
+        //console.log(qAvailable);
+        await Books.updateOne({_id : idBookLong}, {$set:{qSold:qSold, qAvailable:qAvailable}})/*, (err)=>{
+            if(err) console.log(err);
+        })*/
+        //console.log("Finish round "+i);
+    };
+    //console.log("Finish Books update");
+    await Deliveries.updateOne({_id : id}, {$set:{delivery_location:newDelivery.delivery_location, delivery_date:newDelivery.delivery_date,state:"Procesado"}})/*, (err)=>{
+        if(err) console.log(err);
+        res.redirect('/agentHome')
+    })*/
+    //console.log("Finish Dalivery update");
+    var nodemailer = require('nodemailer');
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        secure: false,
+        port: 25,
+        auth:{
+            user: 'tectrabajos2019@gmail.com',
+            pass: 'ati123456'
+        },
+        tls:{
+            rejectUnathorized: false
+        }
+    });
+    let HelperOptions = {
+        from: '"LibroTEC" <tectrabajos2019@gmail.com>',
+        to: email,
+        subject: 'Pedido LibroTEC',
+        text: 'Su pedido pronto estará a llegando a '+ place + '. Detalle de entrega: Fecha de entrega[' 
+        + newDelivery.delivery_location + '], Lugar de entrega[' +newDelivery.delivery_date+']',
+    };
+    transporter.sendMail(HelperOptions, (error, info) => {
+        if(error){
+            console.log(error);
+        }
+        console.log("Correo enviado");
+        console.log(info);
+    });
+
+    res.redirect('/agentHome')
+}
+
+exports.agentClientsReport = async (req, res) =>{
+    const agentUsers = await Users.find({$and:[{idLibrary:userIdLibrary},{role:"client"}]});
+    res.render('AgentViews/clientsReport', {nameGlobal, agentUsers});
+}
+
+exports.agentSearchClients = async(req,res) =>{
+    const idUser = req.query.idUser;
+    /*console.log("idUser");
+    console.log(idUser);*/
+    const name = req.query.name;
+    /*console.log("name");
+    console.log(name);*/
+    const last_name = req.query.last_name;
+    //console.log(last_name);
+    const birth = req.query.birth;
+    //console.log();
+    const type = req.query.type;
+    //console.log(type);
+    const place = req.query.place;
+    //console.log(place);
+    const phone_number = req.query.phone_number;
+    //console.log(phone_number);
+    const email = req.query.email;
+    //console.log(email);
+
+    Users.find({$and:[{$or: [{idUser:idUser},{name:name},{last_name:last_name},{birth:birth},{type:type},
+        {place:place},{phone_number:phone_number},{email:email}]},{idLibrary:userIdLibrary},{role:"client"}]}, 
+        function(err, agentUsers) {
+        if (err) throw err;
+        /*console.log("agentUsers");
+        console.log(agentUsers);*/
+        res.render('AgentViews/clientsReport', {nameGlobal, agentUsers});
+    });  
+}
+
+exports.agentDeliveriesReport = async(req,res)=>{
+    const agentDeliveries = await Deliveries.find({idLibrary:userIdLibrary});
+    res.render("AgentViews/deliveriesReport", {nameGlobal,agentDeliveries});
+}
+
+exports.agentSearchDeliveriesReport = async(req,res) =>{
+    const idUser = req.query.idUser;
+    const date1 = req.query.date1;
+    const date2 = req.query.date2;
+    const topic = req.query.topic;
+    /*console.log("topic");
+    console.log(topic);
+    if (topic == ""){
+        console.log("funciona");
+    };*/
+    const state = req.query.state;
+
+    const agentDeliveries = await Deliveries.find({$and:[{$or: [{state:state},{idUser:idUser},{order_date:{$gte : date1, $lte:date2}}]},{idLibrary:userIdLibrary}]});
+    res.render("AgentViews/deliveriesReport", {nameGlobal,agentDeliveries});
+
+}
+
+//Admin Functions

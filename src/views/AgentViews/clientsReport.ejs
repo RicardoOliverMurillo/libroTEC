@@ -1,0 +1,74 @@
+<% include partials/header%>
+
+<div class="container">
+    <div class="row">
+        <div class = "col-md-4 mx-auto">
+            <div class = "card">
+                <div class = "card-body">
+                    <form action="/agentSearchClients" method="GET">
+                        <div class="form-group">
+                            <input type="text", name="idUser", placeholder="Insertar cédula" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text", name="name", placeholder="Insertar nombre" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text", name="last_name", placeholder="Insertar apellido" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text", name="birth", placeholder="Insertar fecha de nacimiento" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text", name="type", placeholder="Insertar tipo" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text", name="place", placeholder="Insertar dirección" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text", name="phone_number", placeholder="Insertar teléfono" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text", name="email", placeholder="Insertar email" class="form-control">
+                        </div>
+                        <button type= "submit", class="btn btn-info btn-block"> 
+                            Buscar 
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class = "col-md-8 mx-auto">
+            <table class = "table  table-sm table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Cédula</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Cumpleaños</th>
+                        <th>Tipo</th>
+                        <th>Dirección</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <body>
+                    <% for(var i = 0; i < agentUsers.length; i++) { %>
+                        <tr>
+                            <td><%= agentUsers[i].idUser %></td>
+                            <td><%= agentUsers[i].name %></td>
+                            <td><%= agentUsers[i].last_name %></td>
+                            <td><%= agentUsers[i].birth %></td>
+                            <td><%= agentUsers[i].type %></td>
+                            <td><%= agentUsers[i].place %></td>
+                            <td><%= agentUsers[i].phone_number %></td>
+                            <td><%= agentUsers[i].email %></td>
+                        </tr>
+                    <% } %> 
+                </body>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<% include partials/footer%>
