@@ -26,7 +26,7 @@ module.exports = (router) => {
     router.get('/agentDeliveryDetails/:id', Users.agentDeliveryDetails);
     router.get('/agentDeliveryDetails/agentBookDetails/:id', Users.agentBookDetails);
     router.get('/agentProcessView/:id', Users.agentProcessView);
-    router.get('/agentProcessView/agentProcessDelivery/:id', Users.agentProcessDelivery);
+    router.post('/agentProcessDelivery/:id', Users.agentProcessDelivery);
     router.get('/agentClientsReport', Users.agentClientsReport);
     router.get('/agentSearchClients',Users.agentSearchClients);
     router.get('/agentDeliveriesReport',Users.agentDeliveriesReport);
