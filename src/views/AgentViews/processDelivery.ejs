@@ -5,7 +5,7 @@
         <div class = "col-md-7 mx-auto">
             <div class = "card">
                 <div class = "card-body">
-                    <form action="agentProcessDelivery/<%= agentDelivery._id%>" method="GET">
+                    <form action="/agentProcessDelivery/<%= agentDelivery._id%>" method="POST">
                         <div class="form-group">
                             <label for="delivery_location">Ubicación</label>
                             <input type="text", name="delivery_location", value="<%= agentDelivery.delivery_location%>" class="form-control" required>
