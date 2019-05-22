@@ -483,5 +483,3 @@ exports.agentSearchDeliveriesReport = async(req,res) =>{
     res.render("AgentViews/deliveriesReport", {nameGlobal,agentDeliveries});
 
 }
-
-//Admin Functions

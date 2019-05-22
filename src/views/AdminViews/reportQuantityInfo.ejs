@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row">
         <div>
-            <form class="form-inline my-2 my-lg-5" action="/rangeByClient" method="GET" >
+            <form class="form-inline my-2 my-lg-5" action="/deliveriesSearch" method="GET" >
                 <input class="form-control mr-sm-10" name="busqueda" type="search" placeholder="Buscar..." aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
             </form>
@@ -13,18 +13,16 @@
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                            <th>Nombre Cliente</th>
-                            <th>Pedido Mínimo</th>
-                            <th>Pedido Máximo</th>
+                            <th>ID Cliente</th>
+                            <th>Cantidad de Pedidos</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tbody>
-                            <% for(var i = 0; i < rangeInfo.length; i++) { %>
+                            <% for(var i = 0; i < result.length; i++) { %>
                                 <tr>
-                                    <td><%= rangeInfo[i][0] %></td>
-                                    <td><%= rangeInfo[i][1] %></td>
-                                    <td><%= rangeInfo[i][2] %></td>
+                                    <td><%= result[i]._id %></td>
+                                    <td><%= result[i].count %></td>
                                 </tr>
                             <% } %> 
                     </tbody>
