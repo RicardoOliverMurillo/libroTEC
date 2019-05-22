@@ -24,7 +24,7 @@ const booksSchema = new Schema({
     },
     qSold: {
         type:Number,
-        required: true
+        default: 0
     },
     qAvailable: {
         type:Number,
@@ -36,7 +36,7 @@ const booksSchema = new Schema({
     },
     idLibrary:{
         type:String,
-        required: true
+        default: 1
     }
 });
 

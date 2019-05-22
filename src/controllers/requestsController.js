@@ -125,6 +125,6 @@ exports.quantityBooks = async (req, res) => {
 }
 
 exports.getReportQuantityView = async (req, res) => {
-    const deliveriesInfo=[];
+    const result=[];
     res.render('AdminViews/reportQuantityInfo', {result});
 }
