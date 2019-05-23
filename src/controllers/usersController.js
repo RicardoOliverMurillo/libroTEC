@@ -103,7 +103,7 @@ exports.loginUser = async(req, res) =>{
                     res.render('AdminViews/mainView')
                 } else {
                     userGlobal = dataUser.email;
-                    nameGlobal = dataUser.name;
+                    nameGlobal = "admin";
                     res.render('AdminViews/mainView', {nameGlobal, dataUser})
                 }
                 
@@ -464,6 +464,8 @@ exports.getSales = async (req, res) => {
         res.render('AdminViews/salesView', {sales});
     }
 }
+
+//CONSULTAS
 //Controlador para mostrar la consulta libros pedidos por temas
 exports.getBooksBytopic = async (req, res) => {
     const enginneringArray = [];
@@ -539,4 +541,111 @@ exports.getBooksBytopic = async (req, res) => {
     result.push(["Literatura",literatureArray.length, literatureTotalPrice/literatureArray.length])
     res.render('AdminViews/reportsByTopic',{result});
 }
+//Controlador para mostrar los 5 libros mas vendidos
+exports.topFiveBooks = async (req, res) => {
+    const result = [];
+    var resultSearch = new Deliveries();
+    if(nameGlobal=="manager"){
+        resultSearch = await Deliveries.aggregate([
+            {$match: 
+                { idLibrary : userIdLibrary }
+            },
+            { $unwind : "$books" },
+            { $group: { _id: "$books" , count: { $sum: 1 } } },
+            { $sort : { count : -1 } },
+            { $limit : 5 }
+        ]);
+    }else{
+        resultSearch = await Deliveries.aggregate([
+            { $unwind : "$books" },
+            { $group: { _id: "$books" , count: { $sum: 1 } } },
+            { $sort : { count : -1 } },
+            { $limit : 5 }
+        ]);
+    }
+    
+    for (var i = 0; i<resultSearch.length; i++){
+        const bookName = await Books.find({idBook: resultSearch[i]._id});
+        //verificar que el idLibreria de libro sea igual al idLibreria de manager
+        result.push([bookName[0].name, resultSearch[i].count]);
+    }
+    res.render('AdminViews/reportTopFiveBooksView', {result});
 
+}
+//Controlador para mostrar la vista reportByClients
+exports.getRangeByClientView = async (req, res) => {
+    const rangeInfo=[];
+    res.render('AdminViews/reportByClients', {rangeInfo});
+}
+//Controlador para mostrar rango de pedidos por cliente
+exports.getRangeByClient = async (req, res) => {
+    const rangeInfo=[];
+    const clientInfo = await Users.find({idUser:req.query.busqueda});
+    if(nameGlobal =="manager"){
+        if( clientInfo[0].idLibrary == userIdLibrary){
+            const delivery = await Deliveries.find({idUser: req.query.busqueda})
+            var rangeBooks = delivery[0].books
+            var minRange = rangeBooks.length;
+            var maxRange = rangeBooks.length;
+            for (var i = 1; i<delivery.length; i++){
+                rangeBooks = delivery[i].books;
+                if (minRange > rangeBooks.length){
+                    minRange = rangeBooks.length;
+                } else if(maxRange < rangeBooks.length){
+                    maxRange = rangeBooks.length;
+                }
+            }
+        }
+    }else{
+        const delivery = await Deliveries.find({idUser: req.query.busqueda})
+        var rangeBooks = delivery[0].books
+        var minRange = rangeBooks.length;
+        var maxRange = rangeBooks.length;
+        for (var i = 1; i<delivery.length; i++){
+            rangeBooks = delivery[i].books;
+            if (minRange > rangeBooks.length){
+                minRange = rangeBooks.length;
+            } else if(maxRange < rangeBooks.length){
+                maxRange = rangeBooks.length;
+            }
+        }
+    }
+    rangeInfo.push([clientInfo[0].name, minRange, maxRange])
+    res.render('AdminViews/reportByClients', {rangeInfo});
+}
+//Controlador para mostrar la cantidad de libros solicitados por cliente
+exports.quantityBooks = async (req, res) => {
+    var result = new Deliveries();
+    if(nameGlobal=="manager"){
+        result = await Deliveries.aggregate([
+            {$match: {
+                $or: [
+                    { $and: [ {idUser : req.query.name},
+                        {idLibrary : userIdLibrary} ] },                  
+                    {topic: req.query.topic},
+                    {state: req.query.state},
+                    {date: {$gt : req.query.init_date, $lt : req.query.finish_date}}
+                ]
+            }},
+            { $group : { _id: "$idUser", count: { $sum: 1 } } }
+        ]);
+    }else if (nameGlobal=="admin"){
+        result = await Deliveries.aggregate([
+            {$match: {
+                $or: [
+                    {idUser: req.query.name},
+                    {topic: req.query.topic},
+                    {state: req.query.state},
+                    {date: {$gt : req.query.init_date, $lt : req.query.finish_date}}
+                ]
+            }},
+            { $group : { _id: "$idUser", count: { $sum: 1 } } }
+        ]);
+    }
+    res.render('AdminViews/reportQuantityInfo', {result});
+}
+//Controlador para mostrar la vista de reportQuantityInfo
+exports.getReportQuantityView = async (req, res) => {
+    const result=[];
+    res.render('AdminViews/reportQuantityInfo', {result});
+}

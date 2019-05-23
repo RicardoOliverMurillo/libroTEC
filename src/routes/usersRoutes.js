@@ -41,4 +41,9 @@ module.exports = (router) => {
     router.get('/libraries', Users.getLibraries);
     router.get('/sales', Users.getSales);
     router.get('/booksByTopic', Users.getBooksBytopic);
+    router.get('/rangeByClientView', Users.getRangeByClientView);
+    router.get('/rangeByClient', Users.getRangeByClient);
+    router.get('/topFiveBooks', Users.topFiveBooks);
+    router.get('/deliveriesInfo', Users.getReportQuantityView);
+    router.get('/deliveriesSearch', Users.quantityBooks);
 }
