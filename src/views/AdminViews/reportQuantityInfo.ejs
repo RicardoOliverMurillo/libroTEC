@@ -1,15 +1,33 @@
 <% include partials/header%>
-
 <div class="container">
     <div class="row">
-        <div>
-            <form class="form-inline my-2 my-lg-5" action="/deliveriesSearch" method="GET" >
-                <input class="form-control mr-sm-10" name="busqueda" type="search" placeholder="Buscar..." aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-            </form>
+        <div class = "col-md-4 mx-auto">
+            <div class = "card">
+                <div class = "card-body">
+                    <form action="/deliveriesSearch" method="GET">
+                        <div class="form-group">
+                            <input type="text", name="name", placeholder="Insertar ID del cliente" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text", name="state", placeholder="Insertar el estado" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text", name="topic", placeholder="Insertar tema" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="date", name="init_day", placeholder="Insertar la fecha de inicio" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="date", name="finish_date", placeholder="Insertar la fecha de finalización" class="form-control">
+                        </div>
+                        <button type= "submit", class="btn btn-info btn-block"> 
+                            Buscar 
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
-        <!--LIST-->
-        <div class="col-md-7">
+        <div class = "col-md-8 mx-auto">
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -32,5 +50,6 @@
         </div>
     </div>
 </div>
+
 
 <% include Partials/footer%>
