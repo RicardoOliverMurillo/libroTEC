@@ -26,6 +26,11 @@ const salesSchema = new Schema({
     per_disccount: {
         type: Number,
         required: true
+    },
+    idLibrary: {
+        type:String,
+        required: true,
+        default: "1"
     }
 });
 

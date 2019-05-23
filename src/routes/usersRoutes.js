@@ -37,4 +37,8 @@ module.exports = (router) => {
 
     //rutas para vistas de administradores
     router.get('/AdminHome', Users.adminPage);
+    router.get('/books', Users.getBooks);
+    router.get('/libraries', Users.getLibraries);
+    router.get('/sales', Users.getSales);
+    router.get('/booksByTopic', Users.getBooksBytopic);
 }

@@ -1,33 +1,36 @@
+//variables generales
 const Users = require('../models/users');
 const Books = require('../models/books');
 const Deliveries = require('../models/deliveries');
+const Library = require('../models/libraries');
+const Sale = require('../models/sales');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const SECRET_KEY = 'secretkey123456';
-
+//variables globales
 var userGlobal = "";
 var idBookGlobal = "";
 var pedido = [];
-//Variable global para partial de AgentViews
 var nameGlobal ="";
 var userIdLibrary = "";
 
+//Controlador para abrir la vista de administrador
 exports.adminPage = (req, res) =>{
     res.render('AdminViews/mainView')
 }
-
+//Controlador para abrir la vista de usuario
 exports.userPage = (req, res) =>{
     res.render('userViews/userView')
 }
-
+//Controlador para abrir la vista de log in
 exports.loginPage = (req, res) =>{
     res.render('index')
 }
-
+//Controlador para abrir la vista de registrar usuario
 exports.registerPage = (req, res) =>{
     res.render('UserViews/registerView')
 }
-
+//Controlador para crear un usuario nuevo
 exports.createUser = async (req, res) => {
     const newUser = {
         idUser : req.body.idUser,
@@ -54,24 +57,23 @@ exports.createUser = async (req, res) => {
             accessToken: accessToken,
             expiresIn: expiresIn
         }
-        
-        //response 
         res.render('index', {dataUser});
     })
 }
-
+//Controlador para validad el usuario y contrase;a del usuario
 exports.loginUser = async(req, res) =>{
     const userData = {
         email : req.body.email,
         password : req.body.password
     }
-    const books = await Books.find();
     Users.findOne({email: userData.email}, (err, user)=>{
         if (err) return res.status(500).send('Server error');
         if (!user) {
             //email doesn't exist
             res.status(409).send({message: 'something is wrong'});
         } else{
+            Books.find({idLibrary:user.idLibrary}, function(err, books) {
+                if (err) throw err;
             const resultPassword = bcrypt.compareSync(userData.password, user.password);
             if(resultPassword){
                 const expiresIn = 20 * 60 * 60;
@@ -84,18 +86,22 @@ exports.loginUser = async(req, res) =>{
                     accessToken: accessToken,
                     expiresIn: expiresIn
                 }
+                //Redireccionamiento a ClientViewa
                 if(user.role === 'client'){
                     userGlobal = dataUser.email;
                     res.render('UserViews/userView', {dataUser,books})  
                 //Redireccionamiento a AgentViews
                 } else if (user.role === 'agent'){
                     userIdLibrary = dataUser.idLibrary;
-                    console.log(userIdLibrary);
                     userGlobal = dataUser.email;
                     nameGlobal = dataUser.name;
                     res.redirect("/agentHome")
-                }
-                else {
+                //Redireccionamiento a AdminViews
+                }else if (user.role === 'manager'){
+                    userIdLibrary = dataUser.idLibrary;
+                    nameGlobal = "manager";
+                    res.render('AdminViews/mainView')
+                } else {
                     userGlobal = dataUser.email;
                     nameGlobal = dataUser.name;
                     res.render('AdminViews/mainView', {nameGlobal, dataUser})
@@ -105,10 +111,11 @@ exports.loginUser = async(req, res) =>{
                 //password wrong
                 res.status(409).send({message: 'something is wrong'});
             }
+            })
         }
     })
 }
-
+//Controlador para encontrar un usuario
 exports.findUser = async (req, res) =>{
     const user = await Users.findOne({email: req.body.email}, (err, user) =>{
         if (err){
@@ -118,7 +125,7 @@ exports.findUser = async (req, res) =>{
         }
     })
 }
-
+//Controlador para actualizar la informacion de un usuario
 exports.updateUserInfo = async (req, res) =>{
     const newUser = {
         idUser : req.body.idUser,
@@ -150,26 +157,26 @@ exports.updateUserInfo = async (req, res) =>{
     }
     
 }
-
+//Controlador para mostrar la vista de actualizar usuario
 exports.updateView = async (req, res) =>{
     const dataUser1 = await Users.find({email : userGlobal});
     const dataUser = dataUser1[0];
     res.render('UserViews/userInfo', {dataUser})
 }
-
+//Controlador para volver a la pagina de inicio de usuario
 exports.home = async (req, res) =>{
     const dataUser1 = await Users.find({email : userGlobal});
     const dataUser = dataUser1[0];
     const books = await Books.find();
     res.render('UserViews/userView', {dataUser, books})
 }
-
+//Controlador para eliminar un usuario
 exports.deleteUser = async (req,res) =>{
     const {id} = req.params;
     await Users.remove({_id:id});
     res.redirect("/");
 }
-
+//Controlador para filtrar la tabla de libros
 exports.searchBooks = async(req,res) =>{
     const dataUser1 = await Users.find({email : userGlobal});
     const dataUser = dataUser1[0];
@@ -184,7 +191,7 @@ exports.searchBooks = async(req,res) =>{
         res.render('UserViews/userView', {dataUser, books});
     });  
 }
-
+//Controlador para filtrar la tabla de reporte cliente
 exports.searchReport = async(req,res) =>{
     const dataUser1 = await Users.find({email : userGlobal});
     const dataUser = dataUser1[0];
@@ -192,12 +199,12 @@ exports.searchReport = async(req,res) =>{
     const date1 = req.query.date1;
     const date2 = req.query.date2;
     const state = req.query.state;
-
+    
     const deliveriesClient = await Deliveries.find({$or: [{state:state}, {order_date:{$gte : date1, $lte:date2}}]});
     res.render('UserViews/reportView', {dataUser, deliveriesClient});
 
 }
-
+//Controlador para visualizar la informacion de un libro
 exports.infoBooks = async(req,res)=>{
     const dataUser1 = await Users.find({email : userGlobal});
     const dataUser = dataUser1[0];
@@ -207,13 +214,13 @@ exports.infoBooks = async(req,res)=>{
     idBookGlobal = book.idBook;
     res.render("UserViews/infoBook", {dataUser,book});
 }
-
+//Controlador para agregar un libro a un pedido
 exports.addBookDelivery = (req,res)=>{
     pedido.push(idBookGlobal);
     console.log(pedido);
     res.redirect("/home")
 }
-
+//Controlador para mostrar los detalles de un pedido
 exports.viewDelivery = async(req,res)=>{
     const dataUser1 = await Users.find({email : userGlobal});
     const dataUser = dataUser1[0];
@@ -225,7 +232,7 @@ exports.viewDelivery = async(req,res)=>{
     }
     res.render("UserViews/deliveryInfo",{dataUser,books});
 }
-
+//Controlador para realizar un pedido
 exports.addDelivery = async(req,res)=>{
     const dataUser = await Users.find({email : userGlobal});
     const idUser = dataUser[0].idUser;
@@ -250,14 +257,14 @@ exports.addDelivery = async(req,res)=>{
     pedido = [];
     res.redirect("/home");
 }
-
+//Controlador para obtener todos los pedidos de un cliente en especifico
 exports.getDeliveriesClient = async(req,res)=>{
     const dataUser1 = await Users.find({email : userGlobal});
     const dataUser = dataUser1[0];
     const deliveriesClient = await Deliveries.find({idUser:dataUser.idUser});
     res.render("UserViews/myDeliveries",{deliveriesClient, dataUser});
 }
-
+//Controlador para ver los detalles del pedido de un cliente en especifico
 exports.clientDeliveryDetails = async (req,res)=>{
     const dataUser1 = await Users.find({email : userGlobal});
     const dataUser = dataUser1[0];
@@ -270,13 +277,13 @@ exports.clientDeliveryDetails = async (req,res)=>{
     };
     res.render("UserViews/deliveryDetail", {dataUser,clientDelivery,clientDeliveryBooks});
 }
-
+//Controlador para eliminar un pedido
 exports.deleteDelivery = async(req,res)=>{
     const {id} = req.params;
     await Deliveries.remove({_id: id});
     res.redirect("/getDeliveriesClient");
 }
-
+//Controlador para mostrar la vista de reporte
 exports.reporte = async(req,res)=>{
     const dataUser1 = await Users.find({email : userGlobal});
     const dataUser = dataUser1[0];
@@ -284,7 +291,7 @@ exports.reporte = async(req,res)=>{
 
     res.render("UserViews/reportView", {dataUser,deliveriesClient});
 }
-
+//Controlador para ver los detalles de un pedido procesado
 exports.reporteDetails = async(req,res)=>{
     const dataUser1 = await Users.find({email : userGlobal});
     const dataUser = dataUser1[0];
@@ -426,3 +433,110 @@ exports.agentSearchDeliveriesReport = async(req,res) =>{
 }
 
 //Admin Functions
+//Controlador para filtrar la vista de libros en la vista administrador
+exports.getBooks = async (req, res) => {
+    if(nameGlobal=="manager"){
+        const books = await Books.find({idLibrary:userIdLibrary});
+        res.render("AdminViews/booksView", {books});
+    }else{
+        const books = await Books.find();
+        res.render("AdminViews/booksView", {books});
+    }
+    
+}
+//Controlador para filtrar la vista de librerias en la vista administrador
+exports.getLibraries = async (req, res) => {
+    if(nameGlobal=="manager"){
+        const library = await Library.find({idLibrary:userIdLibrary});
+        res.render("AdminViews/librariesView", {library});
+    }else{
+        const library = await Library.find({});
+        res.render("AdminViews/librariesView", {library});
+    }
+}
+//Controlador para filtrar la vista de promociones en la vista administrador
+exports.getSales = async (req, res) => {
+    if(nameGlobal=="manager"){
+        const sales = await Sale.find({idLibrary:userIdLibrary});
+        res.render('AdminViews/salesView', {sales});
+    }else{
+        const sales = await Sale.find();
+        res.render('AdminViews/salesView', {sales});
+    }
+}
+//Controlador para mostrar la consulta libros pedidos por temas
+exports.getBooksBytopic = async (req, res) => {
+    const enginneringArray = [];
+    var enginneringTotalPrice = 0;
+    const adminArray = [];
+    var adminTotalPrice = 0;
+    const naturalScienceArray = [];
+    var naturalScienceTotalPrice = 0;
+    const artsArray = [];
+    var artsTotalPrice = 0;
+    const historyArray = [];
+    var historyTotalPrice = 0;
+    const mathArray = [];
+    var mathTotalPrice = 0;
+    const fictionArray = [];
+    var fictionTotalPrice = 0;
+    const literatureArray = [];
+    var literatureTotalPrice = 0;
+    const result = [];
+    var deliveries = new Deliveries ();
+    if(nameGlobal=="manager"){
+        deliveries = await Deliveries.find({idLibrary:userIdLibrary});
+    }else{
+        deliveries = await Deliveries.find();
+    }
+    for (var i = 0; i<deliveries.length; i++){
+        const booksDelivery = deliveries[i].books;
+        for(var j = 0; j<booksDelivery.length; j++){
+            var bookFound = await Books.find({idBook: booksDelivery[j]})
+            switch (bookFound[0].topic) {
+                case "Ingeniería":
+                    enginneringArray.push(bookFound[0]);
+                    enginneringTotalPrice += bookFound[0].price;
+                    break;
+                case "Administración":
+                    adminArray.push(bookFound[0]);
+                    adminTotalPrice += bookFound[0].price;
+                    break;
+                case "Ciencias Naturales":
+                    naturalScienceArray.push(bookFound[0]);
+                    naturalScienceTotalPrice += bookFound[0].price;
+                    break;
+                case "Artes":
+                    artsArray.push(bookFound[0]);
+                    artsTotalPrice += bookFound[0].price;
+                    break;
+                case "Historia":
+                    historyArray.push(bookFound[0]);
+                    historyTotalPrice += bookFound[0].price;
+                    break;
+                case "Matemáticas":
+                    mathArray.push(bookFound[0]);
+                    mathTotalPrice += bookFound[0].price;
+                    break;
+                case "Ficción":
+                    fictionArray.push(bookFound[0]);
+                    fictionTotalPrice += bookFound[0].price;
+                    break;
+                case "Literatura":
+                    literatureArray.push(bookFound[0]);
+                    literatureTotalPrice += bookFound[0].price;
+                    break;
+            }
+        }
+    }
+    result.push(["Ingeniería",enginneringArray.length, enginneringTotalPrice/enginneringArray.length])
+    result.push(["Administración",adminArray.length, adminTotalPrice/adminArray.length])
+    result.push(["Ciencias Naturales",naturalScienceArray.length, naturalScienceTotalPrice/naturalScienceArray.length])
+    result.push(["Artes",artsArray.length, artsTotalPrice/artsArray.length])
+    result.push(["Historia",historyArray.length, historyTotalPrice/historyArray.length])
+    result.push(["Matemáticas",mathArray.length, mathTotalPrice/mathArray.length])
+    result.push(["Ficción",fictionArray.length, fictionTotalPrice/fictionArray.length])
+    result.push(["Literatura",literatureArray.length, literatureTotalPrice/literatureArray.length])
+    res.render('AdminViews/reportsByTopic',{result});
+}
+
