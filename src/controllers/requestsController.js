@@ -114,9 +114,10 @@ exports.quantityBooks = async (req, res) => {
         //{$unwind: "$books"},
         {$match: {
             $or: [
-                {idUser: req.query.busqueda},
-                {topic: req.query.busqueda},
-                {state: req.query.busqueda}
+                {idUser: req.query.name},
+                {topic: req.query.topic},
+                {state: req.query.state},
+                {date: {$gt : req.query.init_date, $lt : req.query.finish_date}}
             ]
         }},
         { $group : { _id: "$idUser", count: { $sum: 1 } } }
