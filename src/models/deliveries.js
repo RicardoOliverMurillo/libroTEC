@@ -46,7 +46,8 @@ const deliveriesSchema = new Schema({
     },
     idLibrary: {
         type:String,
-        required: false
+        required: true,
+        default: "1"
     }
 });
 

@@ -1,39 +1,17 @@
 <% include partials/header%>
 
-<div class="container">
-    <div class="row">
-        <div class = "col-md-4 mx-auto">
-            <div class = "card">
-                <div class = "card-body">
-                    <form action="/searchBooks" method="GET">
-                        <div class="form-group">
-                            <input type="text", name="library", placeholder="Insertar librería" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <input type="text", name="name", placeholder="Insertar nombre" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <input type="text", name="topic", placeholder="Insertar tema" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <input type="text", name="price1", placeholder="Insertar precio mayor" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <input type="text", name="price2", placeholder="Insertar precio menor" class="form-control">
-                        </div>
-                        <button type= "submit", class="btn btn-info btn-block"> 
-                            Buscar 
-                        </button>
-                    </form>
-                </div>
-            </div>
+<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="https://waarket.com/wp-content/uploads/2015/04/7-Libros-de-Marketing-imprescindibles.jpg" class="d-block w-100" >
         </div>
-        <div class = "col-md-8 mx-auto">
-            
-            
+        <div class="carousel-item">
+            <img src="http://static.betazeta.com/www.belelu.com/up/2014/03/libros1.jpg" class="d-block w-100">
+        </div>
+        <div class="carousel-item">
+            <img src="https://bookhunterblog.files.wordpress.com/2012/07/boulandier-2.jpg" class="d-block w-100">
         </div>
     </div>
 </div>
-
 
 <% include partials/footer%>
