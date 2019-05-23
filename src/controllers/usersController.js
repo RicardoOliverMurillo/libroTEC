@@ -349,47 +349,58 @@ exports.agentProcessDelivery = async(req,res)=>{
     const agentUser = await Users.findOne({idUser:idUser});
     const place = agentUser.place;
     const email = agentUser.email;
+    var qAvailableSwitch = true;
 
     for(var i = 0; i < agentDelivery.books.length; i++){
         const book = await Books.findOne({idBook : agentDelivery.books[i]});
-        const idBookLong = book._id;
-        const qSoldCopy = book.qSold;
-        const qAvailableCopy = book.qAvailable;
-        const qSold = qSoldCopy + 1;
-        const qAvailable = qAvailableCopy - 1;
-        await Books.updateOne({_id : idBookLong}, {$set:{qSold:qSold, qAvailable:qAvailable}})
+        const qAvailable = book.qAvailable;
+        if (qAvailable == 0){
+            qAvailableSwitch = false;
+        };
     };
 
-    await Deliveries.updateOne({_id : id}, {$set:{delivery_location:newDelivery.delivery_location, delivery_date:newDelivery.delivery_date,state:"Procesado"}})
-    var nodemailer = require('nodemailer');
-    let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        secure: false,
-        port: 25,
-        auth:{
-            user: 'tectrabajos2019@gmail.com',
-            pass: 'ati123456'
-        },
-        tls:{
-            rejectUnathorized: false
-        }
-    });
-    let HelperOptions = {
-        from: '"LibroTEC" <tectrabajos2019@gmail.com>',
-        to: email,
-        subject: 'Pedido LibroTEC',
-        text: 'Su pedido pronto estará a llegando a '+ place + '. Detalle de entrega: Fecha de entrega[' 
-        + newDelivery.delivery_location + '], Lugar de entrega[' +newDelivery.delivery_date+']',
+    if(qAvailableSwitch == true){
+        for(var i = 0; i < agentDelivery.books.length; i++){
+            const book = await Books.findOne({idBook : agentDelivery.books[i]});
+            const idBookLong = book._id;
+            const qSoldCopy = book.qSold;
+            const qAvailableCopy = book.qAvailable;
+            const qSold = qSoldCopy + 1;
+            const qAvailable = qAvailableCopy - 1;
+            await Books.updateOne({_id : idBookLong}, {$set:{qSold:qSold, qAvailable:qAvailable}})
+        };
+    
+        await Deliveries.updateOne({_id : id}, {$set:{delivery_location:newDelivery.delivery_location, delivery_date:newDelivery.delivery_date,state:"Procesado"}})
+        var nodemailer = require('nodemailer');
+        let transporter = nodemailer.createTransport({
+            service: 'gmail',
+            secure: false,
+            port: 25,
+            auth:{
+                user: 'tectrabajos2019@gmail.com',
+                pass: 'ati123456'
+            },
+            tls:{
+                rejectUnathorized: false
+            }
+        });
+        let HelperOptions = {
+            from: '"LibroTEC" <tectrabajos2019@gmail.com>',
+            to: email,
+            subject: 'Pedido LibroTEC',
+            text: 'Su pedido pronto estará a llegando a '+ place + '. Detalle de entrega: Fecha de entrega[' 
+            + newDelivery.delivery_location + '], Lugar de entrega[' +newDelivery.delivery_date+']',
+        };
+        transporter.sendMail(HelperOptions, (error, info) => {
+            if(error){
+                console.log(error);
+            }
+            console.log("Correo enviado");
+            console.log(info);
+        });
+        res.redirect('/agentHome')
     };
-    transporter.sendMail(HelperOptions, (error, info) => {
-        if(error){
-            console.log(error);
-        }
-        console.log("Correo enviado");
-        console.log(info);
-    });
-
-    res.redirect('/agentHome')
+    res.redirect('/agentHome');
 }
 
 exports.agentClientsReport = async (req, res) =>{
