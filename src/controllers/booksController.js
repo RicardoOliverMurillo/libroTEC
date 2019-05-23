@@ -1,7 +1,6 @@
 const Books = require('../models/books');
 
 exports.createBook = async (req, res) => {
-    console.log(req.body);
     const book = new Books(req.body);
     await book.save((err, book)=>{
         if(err) console.log(err);

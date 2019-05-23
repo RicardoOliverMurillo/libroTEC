@@ -91,6 +91,41 @@ exports.getRangeByClient = async (req, res) => {
         }
     }
     rangeInfo.push([clientInfo[0].name, minRange, maxRange])
-    console.log(rangeInfo);
     res.render('AdminViews/reportByClients', {rangeInfo});
+}
+
+exports.topFiveBooks = async (req, res) => {
+    const result = [];
+    const resultSearch = await Deliveries.aggregate([
+        { $unwind : "$books" },
+        { $group: { _id: "$books" , count: { $sum: 1 } } },
+        { $sort : { count : -1 } },
+        { $limit : 5 }
+    ]);
+    for (var i = 0; i<resultSearch.length; i++){
+        const bookName = await Books.find({idBook: resultSearch[i]._id});
+        result.push([bookName[0].name, resultSearch[i].count]);
+    }
+    res.render('AdminViews/reportTopFiveBooksView', {result});
+}
+
+exports.quantityBooks = async (req, res) => {
+    const result = await Deliveries.aggregate([
+        //{$unwind: "$books"},
+        {$match: {
+            $or: [
+                {idUser: req.query.name},
+                {topic: req.query.topic},
+                {state: req.query.state},
+                {date: {$gt : req.query.init_date, $lt : req.query.finish_date}}
+            ]
+        }},
+        { $group : { _id: "$idUser", count: { $sum: 1 } } }
+    ]);
+    res.render('AdminViews/reportQuantityInfo', {result});
+}
+
+exports.getReportQuantityView = async (req, res) => {
+    const result=[];
+    res.render('AdminViews/reportQuantityInfo', {result});
 }
