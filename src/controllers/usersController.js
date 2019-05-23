@@ -302,11 +302,13 @@ exports.reporteDetails = async(req,res)=>{
 }
 
 //AGENT FUNTIONS
+//Controlador para ir a la página principal de agente y  ver todos los pedido en orden cronológico
 exports.agentHome = async(req, res) =>{
     const agentDeliveries = await Deliveries.find({idLibrary : userIdLibrary}).sort( { order_date: 1} );
     res.render('AgentViews/deliveriesListView', {nameGlobal,agentDeliveries});
 }
 
+//Controlador para ir a la ventana donde se ven los detalles del pedido
 exports.agentDeliveryDetails = async(req,res)=>{
     const dataUser1 = await Users.find({email : userGlobal});
     const dataUser = dataUser1[0];
@@ -322,6 +324,7 @@ exports.agentDeliveryDetails = async(req,res)=>{
     res.render("AgentViews/deliveryDetail", {dataUser,agentDeliveryClient,nameGlobal,agentDelivery,agentDeliveryBooks});
 }
 
+//Controlador para ir a la ventana donde se ven los detalles de un libro específico
 exports.agentBookDetails = async(req,res)=>{
     const dataUser1 = await Users.find({email : userGlobal});
     const dataUser = dataUser1[0];
@@ -331,12 +334,14 @@ exports.agentBookDetails = async(req,res)=>{
     res.render("AgentViews/bookDetail", {dataUser,nameGlobal,agentBook});
 }
 
+//Controlador para ir a la ventana para procesar pedido
 exports.agentProcessView = async (req, res) =>{
     const {id} = req.params;
     const agentDelivery = await Deliveries.findById(id);
     res.render('AgentViews/processDelivery', {agentDelivery,nameGlobal});
 }
 
+//Controlador para procesar el pedido y devolverse a la página principal de agente
 exports.agentProcessDelivery = async(req,res)=>{
     const newDelivery = {
         delivery_location : req.body.delivery_location,
@@ -403,11 +408,13 @@ exports.agentProcessDelivery = async(req,res)=>{
     res.redirect('/agentHome');
 }
 
+//Controlador para ir a la ventana donde se ven y buscan clientes
 exports.agentClientsReport = async (req, res) =>{
     const agentUsers = await Users.find({$and:[{idLibrary:userIdLibrary},{role:"client"}]});
     res.render('AgentViews/clientsReport', {nameGlobal, agentUsers});
 }
 
+//Controlador para buscar clientes por filtros
 exports.agentSearchClients = async(req,res) =>{
     const idUser = req.query.idUser;
     const name = req.query.name;
@@ -426,11 +433,13 @@ exports.agentSearchClients = async(req,res) =>{
     });  
 }
 
+//Controlador para ir a la ventana donde se ven y buscan pedidos
 exports.agentDeliveriesReport = async(req,res)=>{
     const agentDeliveries = await Deliveries.find({idLibrary:userIdLibrary});
     res.render("AgentViews/deliveriesReport", {nameGlobal,agentDeliveries});
 }
 
+//Controlador para buscar pedidos por filtros
 exports.agentSearchDeliveriesReport = async(req,res) =>{
     const idUser = req.query.idUser;
     const date1 = req.query.date1;
