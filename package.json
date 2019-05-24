@@ -24,6 +24,7 @@
     "cors": "^2.8.5",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "google-translate": "^2.2.0",
     "jsonwebtoken": "^8.5.1",
     "jsonwebtokens": "^8.5.1",
     "moment": "^2.24.0",
