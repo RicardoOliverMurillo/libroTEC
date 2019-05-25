@@ -6,15 +6,19 @@
             <table class = "table  table-sm table-bordered table-hover">
                 <thead>
                     <tr>
+                        <th>Cantidad de comentarios positivos</th>
                         <th>Porcentaje de comentarios positivos</th>
+                        <th>Cantidad de comentarios negativos</th>
                         <th>Porcentaje de comentarios negativos</th>
                     </tr>
                 </thead>
                 <body>
-                    <% for(var i = 0; i < result.length; i++) { %>
+                    <% for(var i = 0; i < resultArray.length; i++) { %>
                         <tr>
-                            <td><%= result[i][0] %></td>
-                            <td><%= result[i][1] %></td>
+                            <td><%= resultArray[i][0] %></td>
+                            <td><%= resultArray[i][1] %></td>
+                            <td><%= resultArray[i][2] %></td>
+                            <td><%= resultArray[i][3] %></td>
                         </tr>
                     <% } %> 
                 </body>

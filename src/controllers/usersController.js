@@ -7,6 +7,7 @@ const Sale = require('../models/sales');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const SECRET_KEY = 'secretkey123456';
+var Sentiment = require('sentiment');
 //variables globales
 var userGlobal = "";
 var idBookGlobal = "";
@@ -694,37 +695,30 @@ exports.getReportQuantityView = async (req, res) => {
 }
 
 exports.getReportSentimentAnalysis = async (req, res) => {
-    //var comments = ["Yo amo los gatos son super tiernos","odio los gatos son pateticos","los gatos son tiernos pero me dan asco","soy alergico a los gatos",
-    //"no tolero a los gatos","los gatos son los mejores amigos del hombre","no me gustan los gatos","me encantan muchisimo","odio los gatos"]
+    var resultArray = []
     const users = await Users.find();
-    console.log(users);
     var positiveComments = 0;
     var negativeComments = 0;
     var negativeResult = 0;
     var positiveResult = 0;
-    var result =[];
-    var Sentiment = require('sentiment');
+    
     var sentiment = new Sentiment();
-    for (var i = 0; i<comments.length; i++){
-        /*var result = sentiment.analyze(commentTranslated);
-                if (result.comparative < 0){
-                    console.log("entré")
-                    negativeComments = negativeComments + 1;
-                    negativeResult = negativeResult + result.comparative;
-                    
-                } else {
-                    positiveComments = positiveComments + 1;
-                    positiveResult = positiveResult + result.comparative;
-                }
-        console.log(negativeComments);
-        console.log(negativeResult);
-        console.log("---------------------------------------");
-        console.log(positiveComments);
-        console.log(positiveResult);
-        console.log("---------------------------------------");
-        console.log(negativeResult / negativeComments);
-        console.log(positiveResult / positiveComments)*/
+    for (var i = 0; i<users.length; i++){
+        if (users[i].review == "null"){
+            console.log("null review");
+        } else{
+            var result = sentiment.analyze(users[i].review);
+            if (result.comparative < 0){
+                negativeComments = negativeComments + 1;
+                negativeResult = negativeResult + result.comparative;
+                
+            } else {
+                positiveComments = positiveComments + 1;
+                positiveResult = positiveResult + result.comparative;
+            }
+        }
     }
+    resultArray.push([positiveComments, (positiveResult / positiveComments), negativeComments, (-1 * negativeResult / negativeComments)]);
 
-    res.render("AdminViews/reportSentimentAnalysis",{result});
+    res.render("AdminViews/reportSentimentAnalysis",{resultArray});
 }
