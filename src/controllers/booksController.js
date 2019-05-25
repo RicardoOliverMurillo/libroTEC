@@ -42,22 +42,3 @@ exports.updateBook = async (req, res) => {
         res.redirect('/books')
     })
 }
-
-exports.translateBookDescription = async (req, res) =>  {
-    const { id } = req.params;
-    await Books.findById({_id : id}, (err, book)=>{
-            if (err){
-                console.log(err);
-            } else{
-                var api = "AIzaSyAwBXQazgJFt-fKtqYWcpdnMXgsj4F1ycI";
-                var googleTranslate = require('google-translate')(api);
-                
-                var text = book.description;
-                console.log("English :>",text);
-                googleTranslate.translate(text, 'en', function(err, translation) {
-                console.log("Spanish :>",translation.translatedText);
-                res.render("AdminViews/updateBookView", {book});
-            });
-        }
-    });
-}

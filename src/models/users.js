@@ -54,6 +54,11 @@ const userSchema = new Schema({
         required: true,
         default: "client"
     },
+    review: {
+        type:String,
+        required: true,
+        default: "null"
+    },
     idLibrary: {
         type:String,
         default: "1"

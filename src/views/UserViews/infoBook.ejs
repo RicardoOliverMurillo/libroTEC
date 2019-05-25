@@ -1,16 +1,28 @@
 <% include partials/header%>
 
-<ul class="list-group">
-    <li class="list-group-item">Identificador: <%= book.idBook%></li>
-    <li class="list-group-item">Nombre: <%= book.name%></li>
-    <li class="list-group-item">Tema: <%= book.topic%></li>
-    <li class="list-group-item">Descripción: <%= book.description%></li>
-    <li class="list-group-item">Cantidad vendida: <%= book.qSold%></li>
-    <li class="list-group-item">Cantidad disponible: <%= book.qAvailable%></li>
-    <li class="list-group-item">Cantidad precio: <%= book.price%></li>
-</ul>
-
-<div>
-    <a href="/addBookDelivery" class="btn btn-success btn-block">Agregar al pedido</a>
+<div class="container">
+    <div class="row">
+        <div class="col-md-5 mx-auto">
+            <ul class="list-group">
+                <li class="list-group-item">Identificador: <%= book.idBook%></li>
+                <li class="list-group-item">Nombre: <%= book.name%></li>
+                <li class="list-group-item">Tema: <%= book.topic%></li>
+                <li class="list-group-item">Descripción: <%= book.description%></li>
+                <div>
+                    <a href="/translate/<%= book._id%>" class="btn btn-info btn-block">Traducir descripción</a>
+                </div>
+                <li class="list-group-item">Traducción: <%= traduccion%></li>
+                <li class="list-group-item">Cantidad vendida: <%= book.qSold%></li>
+                <li class="list-group-item">Cantidad disponible: <%= book.qAvailable%></li>
+                <li class="list-group-item">Cantidad precio: <%= book.price%></li>
+            </ul>
+            
+            <div>
+                <a href="/addBookDelivery" class="btn btn-success btn-block">Agregar al pedido</a>
+            </div>
+        </div>
+    </div>
 </div>
+
+
 <% include partials/footer%>
