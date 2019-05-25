@@ -167,7 +167,7 @@ exports.updateView = async (req, res) =>{
 exports.home = async (req, res) =>{
     const dataUser1 = await Users.find({email : userGlobal});
     const dataUser = dataUser1[0];
-    const books = await Books.find();
+    const books = await Books.find({idLibrary:dataUser.idLibrary});
     res.render('UserViews/userView', {dataUser, books})
 }
 //Controlador para eliminar un usuario
@@ -208,16 +208,37 @@ exports.searchReport = async(req,res) =>{
 exports.infoBooks = async(req,res)=>{
     const dataUser1 = await Users.find({email : userGlobal});
     const dataUser = dataUser1[0];
-
+    const traduccion = "";
     const {id} = req.params;
     const book = await Books.findById(id);
     idBookGlobal = book.idBook;
-    res.render("UserViews/infoBook", {dataUser,book});
+    res.render("UserViews/infoBook", {dataUser,book,traduccion});
+}
+//Controlador para traducir la descripcion del libro a ingles
+exports.translateBookDescription = async (req, res) =>  {
+    const dataUser1 = await Users.find({email : userGlobal});
+    const dataUser = dataUser1[0];
+
+    const { id } = req.params;
+    await Books.findById({_id : id}, (err, book)=>{
+            if (err){
+                console.log(err);
+            } else{
+                var api = "AIzaSyAwBXQazgJFt-fKtqYWcpdnMXgsj4F1ycI";
+                var googleTranslate = require('google-translate')(api);
+                
+                var text = book.description;
+                googleTranslate.translate(text, 'en', function(err, translation) {
+                const traduccion = translation.translatedText;
+
+                res.render("UserViews/infoBook", {dataUser,book, traduccion});
+            });
+        }
+    });
 }
 //Controlador para agregar un libro a un pedido
 exports.addBookDelivery = (req,res)=>{
     pedido.push(idBookGlobal);
-    console.log(pedido);
     res.redirect("/home")
 }
 //Controlador para mostrar los detalles de un pedido
@@ -237,10 +258,9 @@ exports.addDelivery = async(req,res)=>{
     const dataUser = await Users.find({email : userGlobal});
     const idUser = dataUser[0].idUser;
     var total = 0;
-
+    
     for(var i = 0; i < pedido.length; i++){
         const book = await Books.find({idBook:pedido[i]});
-        console.log(book);
         total = total + book[0].price;
     }
     var fechaPedido= new Date(); 
@@ -256,6 +276,29 @@ exports.addDelivery = async(req,res)=>{
     await delivery.save();
     pedido = [];
     res.redirect("/home");
+}
+
+exports.review = async (req,res)=>{
+    const dataUser1 = await Users.find({email : userGlobal});
+    const dataUser = dataUser1[0];
+    res.render('UserViews/review', {dataUser})
+}
+
+exports.updateReview = (req, res) =>{
+    const review = req.body.review;
+    var api = "AIzaSyAwBXQazgJFt-fKtqYWcpdnMXgsj4F1ycI";
+    var googleTranslate = require('google-translate')(api);
+    var traduccion = "";   
+    var text = review;
+    googleTranslate.translate(text, 'en', async function(err, translation) {
+        traduccion = translation.translatedText;
+        console.log(traduccion)
+        const { id } = req.params;
+        await Users.update({_id : id}, {review:traduccion}, (err)=>{
+        if(err) console.log(err);
+            res.redirect('/home')
+        })   
+    });
 }
 //Controlador para obtener todos los pedidos de un cliente en especifico
 exports.getDeliveriesClient = async(req,res)=>{
