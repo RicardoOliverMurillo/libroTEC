@@ -7,6 +7,7 @@ const Sale = require('../models/sales');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const SECRET_KEY = 'secretkey123456';
+var Sentiment = require('sentiment');
 //variables globales
 var userGlobal = "";
 var idBookGlobal = "";
@@ -691,4 +692,33 @@ exports.quantityBooks = async (req, res) => {
 exports.getReportQuantityView = async (req, res) => {
     const result=[];
     res.render('AdminViews/reportQuantityInfo', {result});
+}
+
+exports.getReportSentimentAnalysis = async (req, res) => {
+    var resultArray = []
+    const users = await Users.find();
+    var positiveComments = 0;
+    var negativeComments = 0;
+    var negativeResult = 0;
+    var positiveResult = 0;
+    
+    var sentiment = new Sentiment();
+    for (var i = 0; i<users.length; i++){
+        if (users[i].review == "null"){
+            console.log("null review");
+        } else{
+            var result = sentiment.analyze(users[i].review);
+            if (result.comparative < 0){
+                negativeComments = negativeComments + 1;
+                negativeResult = negativeResult + result.comparative;
+                
+            } else {
+                positiveComments = positiveComments + 1;
+                positiveResult = positiveResult + result.comparative;
+            }
+        }
+    }
+    resultArray.push([positiveComments, (positiveResult / positiveComments), negativeComments, (-1 * negativeResult / negativeComments)]);
+
+    res.render("AdminViews/reportSentimentAnalysis",{resultArray});
 }

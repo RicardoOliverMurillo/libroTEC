@@ -49,4 +49,5 @@ module.exports = (router) => {
     router.get('/topFiveBooks', Users.topFiveBooks);
     router.get('/deliveriesInfo', Users.getReportQuantityView);
     router.get('/deliveriesSearch', Users.quantityBooks);
+    router.get('/sentimentAnalysis', Users.getReportSentimentAnalysis);
 }
