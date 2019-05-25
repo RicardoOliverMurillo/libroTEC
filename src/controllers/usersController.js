@@ -225,7 +225,7 @@ exports.translateBookDescription = async (req, res) =>  {
             if (err){
                 console.log(err);
             } else{
-                var api = "AIzaSyAwBXQazgJFt-fKtqYWcpdnMXgsj4F1ycI";
+                var api = "insert api key";
                 var googleTranslate = require('google-translate')(api);
                 
                 var text = book.description;
@@ -287,7 +287,7 @@ exports.review = async (req,res)=>{
 
 exports.updateReview = (req, res) =>{
     const review = req.body.review;
-    var api = "AIzaSyAwBXQazgJFt-fKtqYWcpdnMXgsj4F1ycI";
+    var api = "insert api key";
     var googleTranslate = require('google-translate')(api);
     var traduccion = "";   
     var text = review;
