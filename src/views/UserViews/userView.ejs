@@ -41,12 +41,15 @@
                 <body>
                     <% for(var i = 0; i < books.length; i++) { %>
                         <tr>
-                            <td><%= books[i].idBook %></td>
-                            <td><%= books[i].name %></td>
-                            <td><%= books[i].topic %></td>
-                            <td>
-                                <a href="infoBooks/<%= books[i]._id%>" class="btn btn-info">Ver</a>
-                            </td>
+                            <% var id = dataUser.idLibrary; %>
+                            <% if (books[i].idLibrary == id) { %>
+                                <td><%= books[i].idBook %></td>
+                                <td><%= books[i].name %></td>
+                                <td><%= books[i].topic %></td>
+                                <td>
+                                    <a href="infoBooks/<%= books[i]._id%>" class="btn btn-info">Ver</a>
+                                </td>
+                            <% } %> 
                         </tr>
                     <% } %> 
                 </body>

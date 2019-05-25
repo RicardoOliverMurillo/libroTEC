@@ -278,13 +278,13 @@ exports.addDelivery = async(req,res)=>{
     pedido = [];
     res.redirect("/home");
 }
-
+//Controlador para mostrar la vista de comentario
 exports.review = async (req,res)=>{
     const dataUser1 = await Users.find({email : userGlobal});
     const dataUser = dataUser1[0];
     res.render('UserViews/review', {dataUser})
 }
-
+//Controlador para actualizar el comentario al cliente
 exports.updateReview = (req, res) =>{
     const review = req.body.review;
     var api = "AIzaSyAwBXQazgJFt-fKtqYWcpdnMXgsj4F1ycI";
@@ -693,7 +693,7 @@ exports.getReportQuantityView = async (req, res) => {
     const result=[];
     res.render('AdminViews/reportQuantityInfo', {result});
 }
-
+//Controlador para analizar los comentarios
 exports.getReportSentimentAnalysis = async (req, res) => {
     var resultArray = []
     const users = await Users.find();
