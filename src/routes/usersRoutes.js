@@ -17,10 +17,13 @@ module.exports = (router) => {
     router.get('/clientDeliveryDetails/:id', Users.clientDeliveryDetails);
     router.get('/deleteDelivery/:id', Users.deleteDelivery);
     router.get('/reporte', Users.reporte);
+    router.get('/review', Users.review);
+    router.post('/reviewUpdate/:id', Users.updateReview);
     router.get('/reporteDetails/:id', Users.reporteDetails);
     router.post('/registerClient', Users.createUser);
     router.post('/login', Users.loginUser);
     router.post('/updateInfo/:id', Users.updateUserInfo);
+    router.get('/translate/:id', Users.translateBookDescription);
     //Rutas para vistas de Agente
     router.get('/agentHome', Users.agentHome);
     router.get('/agentDeliveryDetails/:id', Users.agentDeliveryDetails);
